@@ -6,7 +6,7 @@ setup:
 	@echo "Run the following in your shell:"
 	@echo '  $$(boot2docker shellinit)'
 
-.PHONY: setup opensuse
+.PHONY: setup opensuse debian
 
 clean:
 	@docker rm $(shell docker ps -a -q)

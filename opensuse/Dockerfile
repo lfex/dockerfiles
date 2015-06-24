@@ -10,6 +10,7 @@ RUN zypper --non-interactive install -y \
     erlang erlang-src \
     curl \
     git
+
 RUN curl -L -o /usr/local/bin/rebar https://github.com/rebar/rebar/wiki/rebar && \
     chmod 755 /usr/local/bin/rebar
 RUN curl -L -o /usr/local/bin/rebar3 https://s3.amazonaws.com/rebar3/rebar3 && \

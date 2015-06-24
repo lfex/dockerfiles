@@ -2,7 +2,7 @@
 
 *Dockerfiles for LFE on various distributions*
 
-<image src="" />
+<image src="resources/images/docker-thumb.png" />
 
 
 ## About

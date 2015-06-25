@@ -23,7 +23,6 @@ RUN cd /tmp && \
         erlang-mode erlang-src
 RUN cd /tmp && \
     rpm -Uvh --nodeps --replacefiles $ERLANG_RPM2
-RUN unset ERLANG_HOST ERLANG_PATH ERLANG_RPM1 ERLANG_RPM2
 
 ENV LFE_HOME /opt/erlang/lfe
 RUN mkdir -p $LFE_HOME

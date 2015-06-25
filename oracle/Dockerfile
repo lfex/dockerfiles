@@ -16,7 +16,6 @@ RUN cd /tmp && \
     curl -L -O $ERLANG_HOST/$ERLANG_PATH/$ERLANG_RPM
 RUN cd /tmp && \
     rpm -Uvh --nodeps --replacefiles $ERLANG_RPM
-RUN unset ERLANG_HOST ERLANG_PATH ERLANG_RPM2
 
 ENV LFE_HOME /opt/erlang/lfe
 RUN mkdir -p $LFE_HOME

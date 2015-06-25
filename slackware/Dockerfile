@@ -33,8 +33,9 @@ RUN sport install erlang-otp
 ENV LFE_HOME /opt/erlang/lfe
 RUN mkdir -p $LFE_HOME
 RUN cd `dirname $LFE_HOME` && \
-      git clone https://github.com/rvirding/lfe.git && \
+      git clone https://github.com/lfe/lfe.git && \
       cd $LFE_HOME && \
+      git checkout color-shell-banner && \
       make compile && \
       make install
 

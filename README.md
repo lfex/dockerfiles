@@ -4,15 +4,21 @@
 
 <image src="resources/images/docker-thumb.png" />
 
+##### Table of Contents
 
-## About
+* [About](#about-)
+* [Distributions](#distributions-)
+* [Bonus](#bonus-)
+* [Usage](#usage-)
+
+## About [&#x219F;](#table-of-contents)
 
 This repository provides a handful of LFE ``Dockerfile``s for various Linux
 distributions, thus allowing a developer instant access to an environment
 where they can run LFE or do LFE development.
 
 
-## Distributions
+## Distributions [&#x219F;](#table-of-contents)
 
 This repo provides ``Dockerfile``s for the following Linux distributions:
 
@@ -39,7 +45,7 @@ lfex/oracle          latest              69c066425570        7 minutes ago      
 lfex/arch            latest              7711e7f7ab84        9 minutes ago       1.571 GB
 ```
 
-## Bonus
+## Bonus [&#x219F;](#table-of-contents)
 
 Each image comes with a bonus: a special color LFE REPL banner :-)
 
@@ -48,7 +54,7 @@ Each image comes with a bonus: a special color LFE REPL banner :-)
 <img src="resources/images/screenshot.png" />
 
 
-## Usage
+## Usage [&#x219F;](#table-of-contents)
 
 Example usage is given below using the ``lfex/opensuse`` image. For other
 distributions, simply substitute the name in all the ``make`` targets.

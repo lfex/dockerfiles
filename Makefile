@@ -1,6 +1,8 @@
 TAG_PREFIX = lfex/
 
-all: opensuse debian ubuntu arch centos oracle
+all: clean build-all
+
+build-all: opensuse debian ubuntu arch centos oracle
 
 setup:
 	@echo "Run the following in your shell:"
@@ -8,7 +10,9 @@ setup:
 
 .PHONY: setup opensuse debian ubuntu arch slackware centos oracle
 
-push: push-opensuse push-debian push-ubuntu push-arch push-centos oracle
+push: clean push-all
+
+push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle
 
 clean:
 	@docker rm $(shell docker ps -a -q)

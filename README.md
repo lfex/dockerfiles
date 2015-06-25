@@ -10,6 +10,8 @@
 * [Distributions](#distributions-)
 * [Bonus](#bonus-)
 * [Usage](#usage-)
+  * [Native Docker](#native-docker)
+  * [From Source](#from-source)
 
 ## About [&#x219F;](#table-of-contents)
 
@@ -55,6 +57,25 @@ Each image comes with a bonus: a special color LFE REPL banner :-)
 
 
 ## Usage [&#x219F;](#table-of-contents)
+
+### Native Docker
+
+Example usage is given below using the ``lfex/opensuse`` image. For other
+distributions, simply substitute the name in all the ``make`` targets.
+
+Pull an image from [Docker Hub](https://registry.hub.docker.com/repos/lfex/):
+
+```bash
+$ docker pull lfex/opensuse
+```
+
+Start the REPL:
+
+```
+$ docker run -i -t lfex/opensuse lfe
+```
+
+### From Source
 
 Example usage is given below using the ``lfex/opensuse`` image. For other
 distributions, simply substitute the name in all the ``make`` targets.

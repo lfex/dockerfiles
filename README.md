@@ -30,8 +30,9 @@ If you don't see your favourite, we accept pull requests!
 
 ## Bonus
 
-Each image comes with a bonus: a special color LFE REPL banner :-) (free,
-in every box, kids!)
+Each image comes with a bonus: a special color LFE REPL banner :-)
+
+(Free! One in every box, kids!)
 
 <img src="resources/images/screenshot.png" />
 

@@ -1,16 +1,3 @@
-# Base image
-#
-# VERSION 0.2
-FROM opensuse:latest
-MAINTAINER LFE Maintainers <maintainers@lfe.io>
-
-RUN zypper refresh
-RUN zypper --non-interactive install -y \
-    patterns-openSUSE-devel_basis \
-    erlang erlang-src \
-    curl \
-    git
-
 ENV LFE_HOME /opt/erlang/lfe
 RUN mkdir -p $LFE_HOME
 RUN cd `dirname $LFE_HOME` && \
@@ -39,5 +26,5 @@ RUN curl -L -O https://raw.githubusercontent.com/yrashk/kerl/master/kerl && \
     mv kerl /usr/local/bin
 RUN kerl update releases
 
-ENV ERL_LIBS $ERL_LIBS:$LFE_HOME
+ENV ERL_LIBS $ERL_LIBS:$LFE_HOME:/root/.lfe/libs/ltest:/root/.lfe/libs/lutil
 CMD lfe -eval "(io:format \"The answer is: ~p~n\"  (list (* 2 (lists:foldl (lambda (n acc) (+ n acc)) 0 (lists:seq 1 6)))))"

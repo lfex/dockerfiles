@@ -1,14 +1,14 @@
 TAG_PREFIX = lfex/
 
-all: opensuse debian ubuntu arch centos
+all: opensuse debian ubuntu arch centos oracle
 
 setup:
 	@echo "Run the following in your shell:"
 	@echo '  $$(boot2docker shellinit)'
 
-.PHONY: setup opensuse debian ubuntu arch slackware centos
+.PHONY: setup opensuse debian ubuntu arch slackware centos oracle
 
-push: push-opensuse push-debian push-ubuntu push-arch push-centos
+push: push-opensuse push-debian push-ubuntu push-arch push-centos oracle
 
 clean:
 	@docker rm $(shell docker ps -a -q)
@@ -156,5 +156,29 @@ bash-centos:
 
 push-centos: TAG = $(TAG_PREFIX)centos
 push-centos:
+	@docker push $(TAG)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Oracle Linux
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+oracle: TAG = $(TAG_PREFIX)oracle
+oracle:
+	@docker build -t $(TAG) oracle
+
+check-oracle: TAG = $(TAG_PREFIX)oracle
+check-oracle:
+	@docker run -t $(TAG)
+
+lfe-oracle: TAG = $(TAG_PREFIX)oracle
+lfe-oracle:
+	@docker run -i -t $(TAG) lfe
+
+bash-oracle: TAG = $(TAG_PREFIX)oracle
+bash-oracle:
+	@docker run -i -t $(TAG) bash
+
+push-oracle: TAG = $(TAG_PREFIX)oracle
+push-oracle:
 	@docker push $(TAG)
 

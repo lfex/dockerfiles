@@ -17,9 +17,11 @@ where they can run LFE or do LFE development.
 This repo provides ``Dockerfile``s for the following Linux distributions:
 
 * Arch Linux
-* CentOS (a rather tortured Erlang install to ensure leex is present... help?)
+* CentOS (a rather tortured -- but working -- Erlang install to ensurexi
+  leex is present... help?)
 * Debian
 * openSUSE
+* Oracle Linux
 * Slackware (currently broken... help!)
 * Ubuntu
 

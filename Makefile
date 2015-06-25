@@ -1,12 +1,14 @@
 TAG_PREFIX = lfex/
 
-all: opensuse debian ubuntu arch slackware centos
+all: opensuse debian ubuntu arch centos
 
 setup:
 	@echo "Run the following in your shell:"
 	@echo '  $$(boot2docker shellinit)'
 
 .PHONY: setup opensuse debian ubuntu arch slackware centos
+
+push: push-opensuse push-debian push-ubuntu push-arch push-centos
 
 clean:
 	@docker rm $(shell docker ps -a -q)

@@ -28,6 +28,14 @@ This repo provides ``Dockerfile``s for the following Linux distributions:
 If you don't see your favourite, we accept pull requests!
 
 
+## Bonus
+
+Each image comes with a bonus: a special color LFE REPL banner :-) (free,
+in every box, kids!)
+
+<img src="resources/images/screenshot.png" />
+
+
 ## Usage
 
 Example usage is given below using the ``lfex/opensuse`` image. For other
@@ -64,3 +72,4 @@ Start up a container and log in directly to a Bash shell:
 $ make bash-opensuse
 0c66429e657e:/ #
 ```
+

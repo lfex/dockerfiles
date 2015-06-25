@@ -15,8 +15,8 @@ push: clean push-all
 push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle
 
 clean:
-	@docker rm $(shell docker ps -a -q)
-	@docker rmi $(shell docker images -q --filter 'dangling=true')
+	@-docker rm $(shell docker ps -a -q)
+	@-docker rmi $(shell docker images -q --filter 'dangling=true')
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # openSUSE

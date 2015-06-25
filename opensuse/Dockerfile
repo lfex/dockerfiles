@@ -33,6 +33,10 @@ RUN git clone https://github.com/erlware/relx.git && \
     ./rebar3 escriptize
 RUN mv relx/_build/default/bin/relx /usr/local/bin
 RUN rm -rf relx
+RUN curl -L -O https://raw.githubusercontent.com/yrashk/kerl/master/kerl && \
+    chmod a+x kerl && \
+    mv kerl /usr/local/bin
+RUN kerl update releases
 
 ENV ERL_LIBS $ERL_LIBS:$LFE_HOME
 CMD lfe -eval "(io:format \"The answer is: ~p~n\"  (list (* 2 (lists:foldl (lambda (n acc) (+ n acc)) 0 (lists:seq 1 6)))))"

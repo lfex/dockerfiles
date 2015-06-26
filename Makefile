@@ -2,19 +2,19 @@ TAG_PREFIX = lfex/
 
 all: clean build-all
 
-build-all: opensuse debian ubuntu arch centos oracle
+build-all: opensuse debian ubuntu arch centos oracle raspbian
 
 setup:
 	@echo "Run the following in your shell:"
 	@echo '  $$(boot2docker shellinit)'
 
-.PHONY: setup opensuse debian ubuntu arch slackware centos oracle
+.PHONY: setup opensuse debian ubuntu arch slackware centos oracle raspbian
 
-check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle
+check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle check-raspbian
 
 push: check clean push-all
 
-push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle
+push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle push-raspbian
 
 clean:
 	@-docker rm $(shell docker ps -a -q)
@@ -181,3 +181,21 @@ bash-oracle:
 push-oracle:
 	@SYSTEM=oracle make dockerhub-push
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Raspbian
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+raspbian:
+	@SYSTEM=raspbian make dockerfile
+
+check-raspbian:
+	@SYSTEM=raspbian make check-lfe
+
+lfe-raspbian:
+	@SYSTEM=raspbian make lfe
+
+bash-raspbian:
+	@SYSTEM=raspbian make bash
+
+push-raspbian:
+	@SYSTEM=raspbian make dockerhub-push

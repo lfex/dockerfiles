@@ -10,7 +10,9 @@ setup:
 
 .PHONY: setup opensuse debian ubuntu arch slackware centos oracle
 
-push: clean push-all
+check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle
+
+push: check clean push-all
 
 push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle
 
@@ -33,7 +35,8 @@ dockerfile:
 	@cat common/lfe-setup.Dockerfile >> $(SYSTEM)/Dockerfile
 	@docker build -t $(TAG) $(SYSTEM)
 
-check:
+check-lfe:
+	@echo "Checking LFE for lfex/$(SYSTEM) ..."
 	@docker run -t  $(TAG_PREFIX)$(SYSTEM)
 
 lfe:
@@ -53,7 +56,7 @@ opensuse:
 	@SYSTEM=opensuse make dockerfile
 
 check-opensuse:
-	@SYSTEM=opensuse make check
+	@SYSTEM=opensuse make check-lfe
 
 lfe-opensuse:
 	@SYSTEM=opensuse make lfe
@@ -72,7 +75,7 @@ debian:
 	@SYSTEM=debian make dockerfile
 
 check-debian:
-	@SYSTEM=debian make check
+	@SYSTEM=debian make check-lfe
 
 lfe-debian:
 	@SYSTEM=debian make lfe
@@ -91,7 +94,7 @@ ubuntu:
 	@SYSTEM=ubuntu make dockerfile
 
 check-ubuntu:
-	@SYSTEM=ubuntu make check
+	@SYSTEM=ubuntu make check-lfe
 
 lfe-ubuntu:
 	@SYSTEM=ubuntu make lfe
@@ -110,7 +113,7 @@ arch:
 	@SYSTEM=arch make dockerfile
 
 check-arch:
-	@SYSTEM=arch make check
+	@SYSTEM=arch make check-lfe
 
 lfe-arch:
 	@SYSTEM=arch make lfe
@@ -129,7 +132,7 @@ slackware:
 	@SYSTEM=slackware make dockerfile
 
 check-slackware:
-	@SYSTEM=slackware make check
+	@SYSTEM=slackware make check-lfe
 
 lfe-slackware:
 	@SYSTEM=slackware make lfe
@@ -148,7 +151,7 @@ centos:
 	@SYSTEM=centos make dockerfile
 
 check-centos:
-	@SYSTEM=centos make check
+	@SYSTEM=centos make check-lfe
 
 lfe-centos:
 	@SYSTEM=centos make lfe
@@ -167,7 +170,7 @@ oracle:
 	@SYSTEM=oracle make dockerfile
 
 check-oracle:
-	@SYSTEM=oracle make check
+	@SYSTEM=oracle make check-lfe
 
 lfe-oracle:
 	@SYSTEM=oracle make lfe

@@ -1,0 +1,1 @@
+FROM opensuse:latest

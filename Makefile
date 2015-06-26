@@ -22,13 +22,20 @@ clean:
 # openSUSE
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-opensuse: SYSTEM = opensuse
-opensuse: TAG = $(TAG_PREFIX)$(SYSTEM)
-opensuse:
-	@cp $(SYSTEM)/system.Dockerfile $(SYSTEM)/Dockerfile
+
+dockerfile: TAG = $(TAG_PREFIX)$(SYSTEM)
+dockerfile:
+	@cat common/head.Dockerfile > $(SYSTEM)/Dockerfile
+	@cat common/caveat.Dockerfile >> $(SYSTEM)/Dockerfile
+	@cat common/version.Dockerfile >> $(SYSTEM)/Dockerfile
+	@cat $(SYSTEM)/base.Dockerfile >> $(SYSTEM)/Dockerfile
+	@cat common/maintainer.Dockerfile >> $(SYSTEM)/Dockerfile
+	@cat $(SYSTEM)/system.Dockerfile >> $(SYSTEM)/Dockerfile
 	@cat common/lfe-setup.Dockerfile >> $(SYSTEM)/Dockerfile
 	@docker build -t $(TAG) $(SYSTEM)
-	@rm $(SYSTEM)/Dockerfile
+
+opensuse:
+	SYSTEM=opensuse make dockerfile
 
 check-opensuse: TAG = $(TAG_PREFIX)opensuse
 check-opensuse:

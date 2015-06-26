@@ -1,4 +1,6 @@
 ENV LFE_HOME /opt/erlang/lfe
+ENV ERL_LIBS $ERL_LIBS:$LFE_HOME:/root/.lfe/libs/ltest:/root/.lfe/libs/lutil:/root/.lfe/libs/lcfg
+
 RUN mkdir -p $LFE_HOME
 RUN cd `dirname $LFE_HOME` && \
       git clone https://github.com/lfe/lfe.git && \
@@ -26,5 +28,4 @@ RUN curl -L -O https://raw.githubusercontent.com/yrashk/kerl/master/kerl && \
     mv kerl /usr/local/bin
 RUN kerl update releases
 
-ENV ERL_LIBS $ERL_LIBS:$LFE_HOME:/root/.lfe/libs/ltest:/root/.lfe/libs/lutil
 CMD lfe -eval "(io:format \"The answer is: ~p~n\"  (list (* 2 (lists:foldl (lambda (n acc) (+ n acc)) 0 (lists:seq 1 6)))))"

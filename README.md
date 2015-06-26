@@ -13,11 +13,17 @@
   * [Native Docker](#native-docker)
   * [From Source](#from-source)
 
+
 ## About [&#x219F;](#table-of-contents)
 
 This repository provides a handful of LFE ``Dockerfile``s for various Linux
 distributions, thus allowing a developer instant access to an environment
 where they can run LFE or do LFE development.
+
+Each image comes with the following:
+ * Erlang and LFE
+ * The lutil, ltest, and lcfg LFE libraries
+ * rebar, rebar3, lfetool, relx, and kerl
 
 
 ## Distributions [&#x219F;](#table-of-contents)
@@ -48,6 +54,7 @@ lfex/oracle        latest        69c066425570        7 minutes ago       1.315 G
 lfex/arch          latest        7711e7f7ab84        9 minutes ago       1.571 GB
 ```
 
+
 ## Bonus [&#x219F;](#table-of-contents)
 
 Each image comes with a bonus: a special color LFE REPL banner :-)
@@ -75,6 +82,7 @@ Start the REPL:
 ```
 $ docker run -i -t lfex/opensuse lfe
 ```
+
 
 ### From Source
 

@@ -19,9 +19,8 @@ clean:
 	@-docker rmi $(shell docker images -q --filter 'dangling=true')
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# openSUSE
+# Common to all
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 dockerfile: TAG = $(TAG_PREFIX)$(SYSTEM)
 dockerfile:
@@ -34,24 +33,36 @@ dockerfile:
 	@cat common/lfe-setup.Dockerfile >> $(SYSTEM)/Dockerfile
 	@docker build -t $(TAG) $(SYSTEM)
 
+check:
+	@docker run -t  $(TAG_PREFIX)$(SYSTEM)
+
+lfe:
+	@docker run -i -t $(TAG_PREFIX)$(SYSTEM) lfe
+
+bash:
+	@docker run -i -t $(TAG_PREFIX)$(SYSTEM) bash
+
+dockerhub-push:
+	@docker push $(TAG_PREFIX)$(SYSTEM)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# openSUSE
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 opensuse:
-	SYSTEM=opensuse make dockerfile
+	@SYSTEM=opensuse make dockerfile
 
-check-opensuse: TAG = $(TAG_PREFIX)opensuse
 check-opensuse:
-	@docker run -t $(TAG)
+	@SYSTEM=opensuse make check
 
-lfe-opensuse: TAG = $(TAG_PREFIX)opensuse
 lfe-opensuse:
-	@docker run -i -t $(TAG) lfe
+	@SYSTEM=opensuse make lfe
 
-bash-opensuse: TAG = $(TAG_PREFIX)opensuse
 bash-opensuse:
-	@docker run -i -t $(TAG) bash
+	@SYSTEM=opensuse make bash
 
-push-opensuse: TAG = $(TAG_PREFIX)opensuse
 push-opensuse:
-	@docker push $(TAG)
+	@SYSTEM=opensuse make dockerhub-push
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Debian

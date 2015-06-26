@@ -1,18 +1,36 @@
-# Base image
+# LFE image
 #
-# VERSION 0.2
+# This Dockerfile was generated automatically by the lfex/dockerfiles Makefile.
+# Do not make any edits to this file, as they will be overwritten.
+#
+# If you wish to make changes, e.g. for a pull request on Github, edit
+# ./*/*.Dockerfile and/or ./common/*.Dockerfile.
+#
+# VERSION 0.3
+#
 FROM debian:latest
 MAINTAINER LFE Maintainers <maintainers@lfe.io>
 
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-utils \
     build-essential \
-    erlang \
     ca-certificates \
     libcurl4-openssl-dev \
     curl \
+    wget \
     git
 
+ENV ERLANG_DEB1 erlang-solutions_1.0_all.deb
+ENV ERLANG_DEB2 esl-erlang_18.0-1~debian~jessie_amd64.deb
+ENV ERLANG_HOST http://packages.erlang-solutions.com
+ENV ERLANG_PATH site/esl/esl-erlang/FLAVOUR_3_general
+RUN curl -L -O $ERLANG_HOST/$ERLANG_DEB1
+RUN dpkg -i $ERLANG_DEB1 && rm $ERLANG_DEB1
+RUN apt-get update
+RUN curl -L -O $ERLANG_HOST/$ERLANG_PATH/$ERLANG_DEB2
+RUN dpkg -i --force-depends $ERLANG_DEB2 && rm $ERLANG_DEB2
+    
 ENV LFE_HOME /opt/erlang/lfe
 RUN mkdir -p $LFE_HOME
 RUN cd `dirname $LFE_HOME` && \
@@ -41,5 +59,5 @@ RUN curl -L -O https://raw.githubusercontent.com/yrashk/kerl/master/kerl && \
     mv kerl /usr/local/bin
 RUN kerl update releases
 
-ENV ERL_LIBS=$ERL_LIBS:$LFE_HOME
-CMD /usr/bin/lfe -eval "(io:format \"The answer is: ~p~n\"  (list (* 2 (lists:foldl (lambda (n acc) (+ n acc)) 0 (lists:seq 1 6)))))"
+ENV ERL_LIBS $ERL_LIBS:$LFE_HOME:/root/.lfe/libs/ltest:/root/.lfe/libs/lutil
+CMD lfe -eval "(io:format \"The answer is: ~p~n\"  (list (* 2 (lists:foldl (lambda (n acc) (+ n acc)) 0 (lists:seq 1 6)))))"

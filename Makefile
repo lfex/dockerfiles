@@ -68,25 +68,20 @@ push-opensuse:
 # Debian
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-debian: TAG = $(TAG_PREFIX)debian
 debian:
-	@docker build -t $(TAG) debian
+	@SYSTEM=debian make dockerfile
 
-check-debian: TAG = $(TAG_PREFIX)debian
 check-debian:
-	@docker run -t $(TAG)
+	@SYSTEM=debian make check
 
-lfe-debian: TAG = $(TAG_PREFIX)debian
 lfe-debian:
-	@docker run -i -t $(TAG) lfe
+	@SYSTEM=debian make lfe
 
-bash-debian: TAG = $(TAG_PREFIX)debian
 bash-debian:
-	@docker run -i -t $(TAG) bash
+	@SYSTEM=debian make bash
 
-push-debian: TAG = $(TAG_PREFIX)debian
 push-debian:
-	@docker push $(TAG)
+	@SYSTEM=debian make dockerhub-push
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Ubuntu

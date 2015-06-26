@@ -87,119 +87,94 @@ push-debian:
 # Ubuntu
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ubuntu: TAG = $(TAG_PREFIX)ubuntu
 ubuntu:
-	@docker build -t $(TAG) ubuntu
+	@SYSTEM=ubuntu make dockerfile
 
-check-ubuntu: TAG = $(TAG_PREFIX)ubuntu
 check-ubuntu:
-	@docker run -t $(TAG)
+	@SYSTEM=ubuntu make check
 
-lfe-ubuntu: TAG = $(TAG_PREFIX)ubuntu
 lfe-ubuntu:
-	@docker run -i -t $(TAG) lfe
+	@SYSTEM=ubuntu make lfe
 
-bash-ubuntu: TAG = $(TAG_PREFIX)ubuntu
 bash-ubuntu:
-	@docker run -i -t $(TAG) bash
+	@SYSTEM=ubuntu make bash
 
-push-ubuntu: TAG = $(TAG_PREFIX)ubuntu
 push-ubuntu:
-	@docker push $(TAG)
+	@SYSTEM=ubuntu make dockerhub-push
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Arch
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-arch: TAG = $(TAG_PREFIX)arch
 arch:
-	@docker build -t $(TAG) arch
+	@SYSTEM=arch make dockerfile
 
-check-arch: TAG = $(TAG_PREFIX)arch
 check-arch:
-	@docker run -t $(TAG)
+	@SYSTEM=arch make check
 
-lfe-arch: TAG = $(TAG_PREFIX)arch
 lfe-arch:
-	@docker run -i -t $(TAG) lfe
+	@SYSTEM=arch make lfe
 
-bash-arch: TAG = $(TAG_PREFIX)arch
 bash-arch:
-	@docker run -i -t $(TAG) bash
+	@SYSTEM=arch make bash
 
-push-arch: TAG = $(TAG_PREFIX)arch
 push-arch:
-	@docker push $(TAG)
+	@SYSTEM=arch make dockerhub-push
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Slackware
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-slackware: TAG = $(TAG_PREFIX)slackware
 slackware:
-	@docker build -t $(TAG) slackware
+	@SYSTEM=slackware make dockerfile
 
-check-slackware: TAG = $(TAG_PREFIX)slackware
 check-slackware:
-	@docker run -t $(TAG)
+	@SYSTEM=slackware make check
 
-lfe-slackware: TAG = $(TAG_PREFIX)slackware
 lfe-slackware:
-	@docker run -i -t $(TAG) lfe
+	@SYSTEM=slackware make lfe
 
-bash-slackware: TAG = $(TAG_PREFIX)slackware
 bash-slackware:
-	@docker run -i -t $(TAG) bash
+	@SYSTEM=slackware make bash
 
-push-slackware: TAG = $(TAG_PREFIX)slackware
 push-slackware:
-	@docker push $(TAG)
+	@SYSTEM=slackware make dockerhub-push
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CentOS
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-centos: TAG = $(TAG_PREFIX)centos
 centos:
-	@docker build -t $(TAG) centos
+	@SYSTEM=centos make dockerfile
 
-check-centos: TAG = $(TAG_PREFIX)centos
 check-centos:
-	@docker run -t $(TAG)
+	@SYSTEM=centos make check
 
-lfe-centos: TAG = $(TAG_PREFIX)centos
 lfe-centos:
-	@docker run -i -t $(TAG) lfe
+	@SYSTEM=centos make lfe
 
-bash-centos: TAG = $(TAG_PREFIX)centos
 bash-centos:
-	@docker run -i -t $(TAG) bash
+	@SYSTEM=centos make bash
 
-push-centos: TAG = $(TAG_PREFIX)centos
 push-centos:
-	@docker push $(TAG)
+	@SYSTEM=centos make dockerhub-push
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Oracle Linux
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-oracle: TAG = $(TAG_PREFIX)oracle
 oracle:
-	@docker build -t $(TAG) oracle
+	@SYSTEM=oracle make dockerfile
 
-check-oracle: TAG = $(TAG_PREFIX)oracle
 check-oracle:
-	@docker run -t $(TAG)
+	@SYSTEM=oracle make check
 
-lfe-oracle: TAG = $(TAG_PREFIX)oracle
 lfe-oracle:
-	@docker run -i -t $(TAG) lfe
+	@SYSTEM=oracle make lfe
 
-bash-oracle: TAG = $(TAG_PREFIX)oracle
 bash-oracle:
-	@docker run -i -t $(TAG) bash
+	@SYSTEM=oracle make bash
 
-push-oracle: TAG = $(TAG_PREFIX)oracle
 push-oracle:
-	@docker push $(TAG)
+	@SYSTEM=oracle make dockerhub-push
 

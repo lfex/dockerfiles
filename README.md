@@ -30,7 +30,7 @@ This repo provides ``Dockerfile``s for the following Linux distributions:
 * Debian
 * openSUSE
 * Oracle Linux
-* Raspbian
+* Raspbian (pending tests)
 * Slackware (currently broken... help!)
 * Ubuntu
 

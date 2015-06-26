@@ -1,6 +1,13 @@
-# Base image
+# LFE image
 #
-# VERSION 0.2
+# This Dockerfile was generated automatically by the lfex/dockerfiles Makefile.
+# Do not make any edits to this file, as they will be overwritten.
+#
+# If you wish to make changes, e.g. for a pull request on Github, edit
+# ./*/*.Dockerfile and/or ./common/*.Dockerfile.
+#
+# VERSION 0.3
+#
 FROM centos:latest
 MAINTAINER LFE Maintainers <maintainers@lfe.io>
 
@@ -12,19 +19,17 @@ RUN yum -y install curl wget git
 ENV ERLANG_HOST http://packages.erlang-solutions.com
 ENV ERLANG_PATH site/esl/esl-erlang/FLAVOUR_3_general
 ENV ERLANG_RPM1 erlang-solutions-1.0-1.noarch.rpm
-ENV ERLANG_RPM2 esl-erlang_17.5-1~centos~7_amd64.rpm
-RUN cd /tmp && \
-    curl -L -O $ERLANG_HOST/$ERLANG_RPM1 && \
+ENV ERLANG_RPM2 esl-erlang_18.0-1~centos~7_amd64.rpm
+RUN curl -L -O $ERLANG_HOST/$ERLANG_RPM1 && \
     curl -L -O $ERLANG_HOST/$ERLANG_PATH/$ERLANG_RPM2
-RUN cd /tmp && \
-    rpm -Uvh $ERLANG_RPM1
-RUN cd /tmp && \
-    yum -y install erlang-hipe erlang-doc erlang-manpages \
+RUN rpm -Uvh $ERLANG_RPM1 && rm $ERLANG_RPM1
+RUN yum -y install erlang-hipe erlang-doc erlang-manpages \
         erlang-mode erlang-src
-RUN cd /tmp && \
-    rpm -Uvh --nodeps --replacefiles $ERLANG_RPM2
-
+RUN rpm -Uvh --nodeps --replacefiles $ERLANG_RPM2 && \
+    rm $ERLANG_RPM2
 ENV LFE_HOME /opt/erlang/lfe
+ENV ERL_LIBS $ERL_LIBS:$LFE_HOME:/root/.lfe/libs/ltest:/root/.lfe/libs/lutil:/root/.lfe/libs/lcfg
+
 RUN mkdir -p $LFE_HOME
 RUN cd `dirname $LFE_HOME` && \
       git clone https://github.com/lfe/lfe.git && \
@@ -52,5 +57,4 @@ RUN curl -L -O https://raw.githubusercontent.com/yrashk/kerl/master/kerl && \
     mv kerl /usr/local/bin
 RUN kerl update releases
 
-ENV ERL_LIBS=$ERL_LIBS:$LFE_HOME
-CMD /usr/bin/lfe -eval "(io:format \"The answer is: ~p~n\"  (list (* 2 (lists:foldl (lambda (n acc) (+ n acc)) 0 (lists:seq 1 6)))))"
+CMD lfe -eval "(io:format \"The answer is: ~p~n\"  (list (* 2 (lists:foldl (lambda (n acc) (+ n acc)) 0 (lists:seq 1 6)))))"

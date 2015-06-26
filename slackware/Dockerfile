@@ -1,6 +1,13 @@
-# Base image
+# LFE image
 #
-# VERSION 0.2
+# This Dockerfile was generated automatically by the lfex/dockerfiles Makefile.
+# Do not make any edits to this file, as they will be overwritten.
+#
+# If you wish to make changes, e.g. for a pull request on Github, edit
+# ./*/*.Dockerfile and/or ./common/*.Dockerfile.
+#
+# VERSION 0.3
+#
 FROM vbatts/slackware
 MAINTAINER LFE Maintainers <maintainers@lfe.io>
 
@@ -29,8 +36,9 @@ RUN rsync -av \
     /var/lib/sbopkg/SBo/$DISTRO_VERSION/
 
 RUN sport install erlang-otp
-
 ENV LFE_HOME /opt/erlang/lfe
+ENV ERL_LIBS $ERL_LIBS:$LFE_HOME:/root/.lfe/libs/ltest:/root/.lfe/libs/lutil:/root/.lfe/libs/lcfg
+
 RUN mkdir -p $LFE_HOME
 RUN cd `dirname $LFE_HOME` && \
       git clone https://github.com/lfe/lfe.git && \
@@ -58,5 +66,4 @@ RUN curl -L -O https://raw.githubusercontent.com/yrashk/kerl/master/kerl && \
     mv kerl /usr/local/bin
 RUN kerl update releases
 
-ENV ERL_LIBS=$ERL_LIBS:$LFE_HOME
-CMD /usr/bin/lfe -eval "(io:format \"The answer is: ~p~n\"  (list (* 2 (lists:foldl (lambda (n acc) (+ n acc)) 0 (lists:seq 1 6)))))"
+CMD lfe -eval "(io:format \"The answer is: ~p~n\"  (list (* 2 (lists:foldl (lambda (n acc) (+ n acc)) 0 (lists:seq 1 6)))))"

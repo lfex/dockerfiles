@@ -39,6 +39,7 @@ This repo provides ``Dockerfile``s for the following Linux distributions:
 * Oracle Linux
 * Raspbian (pending tests)
 * Slackware (currently broken... help!)
+* Tiny Core Linux
 * Ubuntu
 
 If you don't see your favourite, we accept pull requests!
@@ -49,6 +50,7 @@ we have the following:
 ```
 lfex/debian          latest              857ff2a1a047        565.4 MB
 lfex/ubuntu          latest              c6d3f8ee6367        572.2 MB
+lfex/tinycore        latest              67d363082648        867.8 MB
 lfex/centos          latest              c0f7ddd3cc86        912 MB
 lfex/opensuse        latest              1287380be3c2        1.229 GB
 lfex/oracle          latest              bde166074202        1.319 GB

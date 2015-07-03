@@ -2,19 +2,19 @@ TAG_PREFIX = lfex/
 
 all: clean build-all
 
-build-all: opensuse debian ubuntu arch centos oracle raspbian fedora
+build-all: opensuse debian ubuntu arch centos oracle raspbian fedora tinycore
 
 setup:
 	@echo "Run the following in your shell:"
 	@echo '  $$(boot2docker shellinit)'
 
-.PHONY: setup opensuse debian ubuntu arch slackware centos oracle raspbian fedora
+.PHONY: setup opensuse debian ubuntu arch slackware centos oracle raspbian fedora tinycore
 
-check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle check-raspbian check-fedora
+check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle check-raspbian check-fedora check-tinycore
 
 push: check clean push-all
 
-push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle push-raspbian push-fedora
+push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle push-raspbian push-fedora push-tinycore
 
 clean:
 	@-docker rm $(shell docker ps -a -q)
@@ -218,3 +218,23 @@ bash-fedora:
 
 push-fedora:
 	@SYSTEM=fedora make dockerhub-push
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Tiny Core
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+tinycore:
+	@SYSTEM=tinycore make dockerfile
+
+check-tinycore:
+	@SYSTEM=tinycore make check-lfe
+
+lfe-tinycore:
+	@SYSTEM=tinycore make lfe
+
+bash-tinycore:
+	@SYSTEM=tinycore make bash
+
+push-tinycore:
+	@SYSTEM=tinycore make dockerhub-push
+

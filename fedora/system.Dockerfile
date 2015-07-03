@@ -1,5 +1,5 @@
 RUN dnf check-update || dnf -y upgrade
-RUN dnf -y install python-dnf-plugins-extras-migrate wget
+RUN dnf -y install python-dnf-plugins-extras-migrate wget which
 RUN dnf -y groupinstall "Development Tools"; dnf clean all
 
 ENV ERLANG_HOST http://packages.erlang-solutions.com

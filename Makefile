@@ -2,19 +2,19 @@ TAG_PREFIX = lfex/
 
 all: clean build-all
 
-build-all: opensuse debian ubuntu arch centos oracle raspbian
+build-all: opensuse debian ubuntu arch centos oracle raspbian fedora
 
 setup:
 	@echo "Run the following in your shell:"
 	@echo '  $$(boot2docker shellinit)'
 
-.PHONY: setup opensuse debian ubuntu arch slackware centos oracle raspbian
+.PHONY: setup opensuse debian ubuntu arch slackware centos oracle raspbian fedora
 
-check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle check-raspbian
+check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle check-raspbian check-fedora
 
 push: check clean push-all
 
-push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle push-raspbian
+push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle push-raspbian push-fedora
 
 clean:
 	@-docker rm $(shell docker ps -a -q)
@@ -199,3 +199,22 @@ bash-raspbian:
 
 push-raspbian:
 	@SYSTEM=raspbian make dockerhub-push
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Fedora
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+fedora:
+	@SYSTEM=fedora make dockerfile
+
+check-fedora:
+	@SYSTEM=fedora make check-lfe
+
+lfe-fedora:
+	@SYSTEM=fedora make lfe
+
+bash-fedora:
+	@SYSTEM=fedora make bash
+
+push-fedora:
+	@SYSTEM=fedora make dockerhub-push

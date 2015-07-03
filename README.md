@@ -28,6 +28,7 @@ This repo provides ``Dockerfile``s for the following Linux distributions:
 * CentOS (a rather tortured -- but working -- Erlang install to ensure
   leex is present... help?)
 * Debian
+* Fedora
 * openSUSE
 * Oracle Linux
 * Raspbian

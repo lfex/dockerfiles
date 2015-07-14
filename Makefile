@@ -8,13 +8,13 @@ setup:
 	@echo "Run the following in your shell:"
 	@echo '  $$(boot2docker shellinit)'
 
-.PHONY: setup opensuse debian ubuntu arch slackware centos oracle raspbian fedora tinycore
+.PHONY: setup opensuse debian ubuntu arch slackware centos oracle fedora tinycore
 
 check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle check-fedora check-tinycore
 
 push: check clean push-all
 
-push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle push-raspbian push-fedora push-tinycore
+push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle push-fedora push-tinycore
 
 clean:
 	@-docker rm $(shell docker ps -a -q)

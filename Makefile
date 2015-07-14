@@ -10,7 +10,7 @@ setup:
 
 .PHONY: setup opensuse debian ubuntu arch slackware centos oracle raspbian fedora tinycore
 
-check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle check-raspbian check-fedora check-tinycore
+check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle check-fedora check-tinycore
 
 push: check clean push-all
 

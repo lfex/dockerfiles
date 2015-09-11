@@ -31,6 +31,7 @@ RUN rpm -Uvh --replacepkgs --nodeps $ERLANG_RPM && \
 ENV LFE_HOME /opt/erlang/lfe
 ENV ERL_LIBS $ERL_LIBS:$LFE_HOME:/root/.lfe/libs/ltest:/root/.lfe/libs/lutil:/root/.lfe/libs/lcfg
 
+RUN echo
 RUN mkdir -p $LFE_HOME
 RUN cd `dirname $LFE_HOME` && \
       git clone https://github.com/lfe/lfe.git && \

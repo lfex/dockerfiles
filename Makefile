@@ -2,7 +2,7 @@ TAG_PREFIX = lfex/
 
 all: clean build-all
 
-build-all: opensuse debian ubuntu arch centos oracle raspbian fedora tinycore
+build-all: opensuse debian ubuntu arch centos oracle fedora tinycore
 
 setup:
 	@echo "Run the following in your shell:"

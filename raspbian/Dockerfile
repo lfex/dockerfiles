@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV ERLANG_DEB1 erlang-solutions_1.0_all.deb
 ENV ERLANG_DEB2 esl-erlang_15.b.3-1~raspbian~wheezy_armhf.deb
 ENV ERLANG_HOST http://packages.erlang-solutions.com
-ENV ERLANG_PATH site/esl/esl-erlang/FLAVOUR_3_general
+ENV ERLANG_PATH site/esl/esl-erlang/FLAVOUR_1_general
 RUN curl -L -O $ERLANG_HOST/$ERLANG_DEB1
 RUN dpkg -i $ERLANG_DEB1 && rm $ERLANG_DEB1
 RUN apt-get update

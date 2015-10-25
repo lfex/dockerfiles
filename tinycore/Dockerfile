@@ -12,7 +12,8 @@ FROM tatsushid/tinycore:6.3-x86
 MAINTAINER LFE Maintainers <maintainers@lfe.io>
 
 ENV LANG C.UTF-8
-ENV ERL_HOME /opt/erlang/18.0
+ENV ERL_VERSION 18.1
+ENV ERL_HOME /opt/erlang/$ERL_VERSION
 ENV PATH $PATH:$ERL_HOME/bin
 ENV ERL_LIBS $ERL_HOME:$ERL_LIBS
 
@@ -41,8 +42,8 @@ RUN curl -L -O https://raw.githubusercontent.com/yrashk/kerl/master/kerl && \
     mv kerl /usr/local/bin
 RUN kerl update releases
 
-RUN kerl build 18.0 18.0
-RUN kerl install 18.0 /opt/erlang/18.0
+RUN kerl build $ERL_VERSION $ERL_VERSION
+RUN kerl install $ERL_VERSION $ERL_HOME
 RUN . $ERL_HOME/activate
 
 ENV LFE_HOME /opt/erlang/lfe

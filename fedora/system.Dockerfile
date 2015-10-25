@@ -3,7 +3,7 @@ RUN dnf -y install python-dnf-plugins-extras-migrate wget which
 RUN dnf -y groupinstall "Development Tools"; dnf clean all
 
 ENV ERLANG_HOST http://packages.erlang-solutions.com
-ENV ERLANG_PATH site/esl/esl-erlang/FLAVOUR_3_general
+ENV ERLANG_PATH site/esl/esl-erlang/FLAVOUR_1_general
 ENV ERLANG_RPM1 erlang-solutions-1.0-1.noarch.rpm
 ENV ERLANG_RPM2 esl-erlang_15.b.3-1~fedora~beefymiracle_amd64.rpm
 RUN curl -L -O $ERLANG_HOST/$ERLANG_RPM1 && \

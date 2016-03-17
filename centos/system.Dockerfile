@@ -6,7 +6,7 @@ RUN yum -y install curl wget git
 ENV ERLANG_HOST http://packages.erlang-solutions.com
 ENV ERLANG_PATH site/esl/esl-erlang/FLAVOUR_1_general
 ENV ERLANG_RPM1 erlang-solutions-1.0-1.noarch.rpm
-ENV ERLANG_RPM2 esl-erlang_18.1-1~centos~7_amd64.rpm
+ENV ERLANG_RPM2 esl-erlang_18.3-1~centos~7_amd64.rpm
 RUN curl -L -O $ERLANG_HOST/$ERLANG_RPM1 && \
     curl -L -O $ERLANG_HOST/$ERLANG_PATH/$ERLANG_RPM2
 RUN rpm -Uvh $ERLANG_RPM1 && rm $ERLANG_RPM1

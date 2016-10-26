@@ -15,8 +15,8 @@ RUN curl -L -o /usr/local/bin/rebar3 https://s3.amazonaws.com/rebar3/rebar3 && \
     chmod 755 /usr/local/bin/rebar3
 RUN git clone https://github.com/erlware/relx.git && \
     cd relx && \
-    ./rebar3 update && \
-    ./rebar3 escriptize
+    rebar3 update && \
+    rebar3 escriptize
 RUN mv relx/_build/default/bin/relx /usr/local/bin
 RUN rm -rf relx
 RUN curl -L -O https://raw.githubusercontent.com/yrashk/kerl/master/kerl && \

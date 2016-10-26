@@ -41,7 +41,7 @@ ENV PATH $PATH:$LFE_HOME/bin
 RUN echo
 RUN mkdir -p $LFE_HOME
 RUN cd `dirname $LFE_HOME` && \
-      git clone https://github.com/lfe/lfe.git && \
+      git clone https://github.com/rvirding/lfe.git && \
       cd $LFE_HOME && \
       mkdir -p ebin && \
       make compile && \

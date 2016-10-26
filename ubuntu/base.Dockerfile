@@ -1,1 +1,1 @@
-FROM ubuntu:15.10
+FROM ubuntu:16.04

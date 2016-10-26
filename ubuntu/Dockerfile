@@ -8,7 +8,7 @@
 #
 # VERSION 1.0
 #
-FROM ubuntu:15.10
+FROM ubuntu:16.04
 MAINTAINER LFE Maintainers <maintainers@lfe.io>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -20,12 +20,13 @@ RUN apt-get install -y --no-install-recommends \
     libcurl4-openssl-dev \
     curl \
     wget \
-    git
+    git \
+    pandoc
 
 ENV ERLANG_DEB1 erlang-solutions_1.0_all.deb
-ENV ERLANG_DEB2 esl-erlang_18.3-1~ubuntu~wily_amd64.deb
+ENV ERLANG_DEB2 esl-erlang_19.1.3-1~ubuntu~xenial_amd64.deb
 ENV ERLANG_HOST http://packages.erlang-solutions.com
-ENV ERLANG_PATH site/esl/esl-erlang/FLAVOUR_1_general
+ENV ERLANG_PATH erlang/esl-erlang/FLAVOUR_1_general
 RUN curl -L -O $ERLANG_HOST/$ERLANG_DEB1
 RUN dpkg -i $ERLANG_DEB1 && rm $ERLANG_DEB1
 RUN apt-get update
@@ -49,8 +50,8 @@ RUN curl -L -o /usr/local/bin/rebar3 https://s3.amazonaws.com/rebar3/rebar3 && \
     chmod 755 /usr/local/bin/rebar3
 RUN git clone https://github.com/erlware/relx.git && \
     cd relx && \
-    ./rebar3 update && \
-    ./rebar3 escriptize
+    rebar3 update && \
+    rebar3 escriptize
 RUN mv relx/_build/default/bin/relx /usr/local/bin
 RUN rm -rf relx
 RUN curl -L -O https://raw.githubusercontent.com/yrashk/kerl/master/kerl && \

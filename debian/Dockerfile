@@ -12,17 +12,23 @@ FROM debian:jessie
 MAINTAINER LFE Maintainers <maintainers@lfe.io>
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends \
     apt-utils \
-    build-essential \
+    build-essential
+RUN apt-get install -y --no-install-recommends \
     ca-certificates \
     libcurl4-openssl-dev \
     curl \
     wget \
     git
+RUN apt-get install -y --no-install-recommends \
+    libsctp1 libsctp-dev lksctp-tools
+RUN apt-get install -y --no-install-recommends \
+    pandoc
 
 ENV ERLANG_DEB1 erlang-solutions_1.0_all.deb
-ENV ERLANG_DEB2 esl-erlang_18.3-1~debian~jessie_amd64.deb
+ENV ERLANG_DEB2 esl-erlang_19.1.3-1~debian~jessie_amd64.deb
 ENV ERLANG_HOST https://packages.erlang-solutions.com
 ENV ERLANG_PATH erlang/esl-erlang/FLAVOUR_1_general
 RUN curl -L -O $ERLANG_HOST/$ERLANG_DEB1
@@ -47,8 +53,8 @@ RUN curl -L -o /usr/local/bin/rebar3 https://s3.amazonaws.com/rebar3/rebar3 && \
     chmod 755 /usr/local/bin/rebar3
 RUN git clone https://github.com/erlware/relx.git && \
     cd relx && \
-    ./rebar3 update && \
-    ./rebar3 escriptize
+    rebar3 update && \
+    rebar3 escriptize
 RUN mv relx/_build/default/bin/relx /usr/local/bin
 RUN rm -rf relx
 RUN curl -L -O https://raw.githubusercontent.com/yrashk/kerl/master/kerl && \

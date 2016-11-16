@@ -44,11 +44,13 @@ ENV USER_REBAR_CONFIG $USER_REBAR/rebar.config
 RUN echo
 RUN mkdir -p $LFE_HOME
 RUN cd `dirname $LFE_HOME` && \
-      git clone https://github.com/rvirding/lfe.git && \
-      cd $LFE_HOME && \
+      git clone https://github.com/rvirding/lfe.git
+RUN cd $LFE_HOME && \
       mkdir -p ebin && \
       make compile && \
-      make install
+      make install && \
+      make docs && \
+      make docs-man
 
 ### rebar3 ###
 

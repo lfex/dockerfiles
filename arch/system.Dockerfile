@@ -5,3 +5,4 @@ RUN pacman -Syu --noconfirm \
     curl \
     git
 RUN pacman -Syu --noconfirm pandoc
+RUN pacman -Syu --noconfirm man

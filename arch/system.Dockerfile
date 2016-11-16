@@ -4,3 +4,4 @@ RUN pacman -Syu --noconfirm \
     erlang \
     curl \
     git
+RUN pacman -Syu --noconfirm pandoc

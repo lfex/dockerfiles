@@ -22,8 +22,7 @@ where they can run LFE or do LFE development.
 
 Each image comes with the following:
  * Erlang and LFE
- * The lutil, ltest, and lcfg LFE libraries
- * rebar, rebar3, lfetool, relx, and kerl
+ * The rebar3, relx, and kerl tools
 
 
 ## Distributions [&#x219F;](#table-of-contents)

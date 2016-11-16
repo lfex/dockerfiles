@@ -29,6 +29,7 @@ ENV ERLANG_HOST http://packages.erlang-solutions.com
 ENV ERLANG_PATH erlang/esl-erlang/FLAVOUR_1_general
 RUN curl -L -O $ERLANG_HOST/$ERLANG_DEB1
 RUN dpkg -i $ERLANG_DEB1 && rm $ERLANG_DEB1
+
 RUN apt-get update
 RUN curl -L -O $ERLANG_HOST/$ERLANG_PATH/$ERLANG_DEB2
 RUN dpkg -i --force-depends $ERLANG_DEB2 && rm $ERLANG_DEB2
@@ -37,6 +38,7 @@ RUN apt-get update
 RUN apt-get -f install -y --fix-missing
 RUN apt-get install -y \
   man
+
 ENV LFE_HOME /opt/erlang/lfe
 ENV PATH $PATH:$LFE_HOME/bin
 ENV HOME /root

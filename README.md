@@ -110,23 +110,19 @@ Start up a container and log in directly to an LFE REPL:
 
 ```
 $ make lfe-opensuse
-Erlang/OTP 17 [erts-6.1] [source] [64-bit] [smp:8:8] [async-threads:10] ...
+Erlang/OTP 19 [erts-8.1] [source-77fb4f8] [64-bit] [smp:4:4] [async...
 
-         (
-     (    )  )
-      )_.(._(
-   .-(   \\  )-.       |   A Lisp-2+ on the Erlang VM
-  (     / \\    )      |   Docs: http://docs.lfe.io/
-  |`-.._____..-';.     |
-  |         g  (_ \    |   Type (help) for usage info.
-  |        n    || |   |
-  |       a     '/ ;   |   Source code:
-  (      l      / /    |   http://github.com/rvirding/lfe
-   \    r      ( /     |
-    \  E      ,y'      |   LFE v0.9.1
-     `-.___.-'         |   LFE Shell V6.1 (abort with G^)
+   ..-~.~_~---..
+  (      \\     )    |   A Lisp-2+ on the Erlang VM
+  |`-.._/_\\_.-':    |   Type (help) for usage info.
+  |         g |_ \   |
+  |        n    | |  |   Docs: http://docs.lfe.io/
+  |       a    / /   |   Source: http://github.com/rvirding/lfe
+   \     l    |_/    |
+    \   r     /      |   LFE v1.3-dev (abort with ^G)
+     `-E___.-'
 
->
+lfe>
 ```
 
 

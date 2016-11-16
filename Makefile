@@ -17,8 +17,8 @@ push: check clean push-all
 push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle push-fedora push-tinycore
 
 clean:
-	@-docker rm $(shell docker ps -a -q)
-	@-docker rmi $(shell docker images -q --filter 'dangling=true')
+	@-docker rm `docker ps -a -q`
+	@-docker rmi `docker images -q --filter 'dangling=true'`
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Common to all

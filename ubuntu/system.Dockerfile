@@ -20,3 +20,7 @@ RUN apt-get update
 RUN curl -L -O $ERLANG_HOST/$ERLANG_PATH/$ERLANG_DEB2
 RUN dpkg -i --force-depends $ERLANG_DEB2 && rm $ERLANG_DEB2
 
+RUN apt-get update
+RUN apt-get -f install -y --fix-missing
+RUN apt-get install -y \
+  man

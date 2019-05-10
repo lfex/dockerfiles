@@ -7,109 +7,57 @@
 ##### Table of Contents
 
 * [About](#about-)
-* [Distributions](#distributions-)
-* [Bonus](#bonus-)
 * [Usage](#usage-)
-  * [Native Docker](#native-docker)
-  * [From Source](#from-source)
+  * [Instant REPL](#instant-repl-)
+  * [Running Examples](#running-examples-)
 
 
 ## About [&#x219F;](#table-of-contents)
 
-This repository provides a handful of LFE ``Dockerfile``s for various Linux
-distributions, thus allowing a developer instant access to an environment
-where they can run LFE or do LFE development.
+This repository provides a handful of LFE `Dockerfile`s based on similar 
+Erlang docker files (available [here](https://hub.docker.com/_/erlang)):
+* standard (Debian, [buildpack-deps](https://hub.docker.com/_/buildpack-deps/) 
+  based images)
+* slim (Debian based images with only what Erlang requires)
+* alpine
 
-Each image comes with the following:
- * Erlang and LFE
- * The rebar3, relx, and kerl tools
+These include the following LFE versions:
+* 1.3-dev
 
+Dependeing upon image type, some or all of the following Erlang versions are 
+available:
+* 17.5 (only with standard image type)
+* 18.3 (standard and slim)
+* 19.3 (standard and slim)
+* 20.3 (all)
+* 21.3 (all)
 
-## Distributions [&#x219F;](#table-of-contents)
-
-This repo provides ``Dockerfile``s for the following Linux distributions:
-
-* Arch Linux
-* CentOS (a rather tortured -- but working -- Erlang install to ensure
-  leex is present... help?)
-* Debian
-* Fedora
-* openSUSE
-* Oracle Linux
-* Raspbian (pending tests)
-* Slackware (currently broken... help!)
-* Tiny Core Linux
-* Ubuntu
-
-If you don't see your favourite, we accept pull requests!
-
-Ordered by size (smallest to largest using the output from ``docker images``),
-we have the following:
+The LFE image are published with tags in the following format:
 
 ```
-lfex/debian          latest              857ff2a1a047        565.4 MB
-lfex/ubuntu          latest              c6d3f8ee6367        572.2 MB
-lfex/tinycore        latest              67d363082648        867.8 MB
-lfex/centos          latest              c0f7ddd3cc86        912 MB
-lfex/opensuse        latest              1287380be3c2        1.229 GB
-lfex/oracle          latest              bde166074202        1.319 GB
-lfex/fedora          latest              a40b62cbb7d0        1.426 GB
-lfex/arch            latest              53c8fe225bb8        1.574 GB
+<org>/<project>:<lfe-version>-<erlang-version>-<image-type>
 ```
 
+For example, LFE v1.3 running on Erlang 20.3 in an Alpine-based container would be:
+```
+lfex/lfe:1.3-20.3-alpine
+```
 
-## Bonus [&#x219F;](#table-of-contents)
-
-Each image comes with a bonus: a special color LFE REPL banner :-)
-
-(Free! One in every box, kids!)
-
-<img src="resources/images/screenshot.png" />
+All published LFE Docker images are available here:
+* [https://hub.docker.com/r/lfex/lfe/tags](https://hub.docker.com/r/lfex/lfe/tags)
 
 
 ## Usage [&#x219F;](#table-of-contents)
 
-### Native Docker
+### Instant REPL [&#x219F;](#table-of-contents)
 
-Example usage is given below using the ``lfex/opensuse`` image. For other
-distributions, simply substitute the name in all the ``make`` targets.
-
-Pull an image from [Docker Hub](https://registry.hub.docker.com/repos/lfex/):
-
-```bash
-$ docker pull lfex/opensuse
-```
-
-Start the REPL:
+Running an LFE REPL in any of the provided images is as simple as the following:
 
 ```
-$ docker run -i -t lfex/opensuse lfe
+$ docker run -i -t lfex/lfe:1.3-21.3-alpine
 ```
-
-
-### From Source
-
-Example usage is given below using the ``lfex/opensuse`` image. For other
-distributions, simply substitute the name in all the ``make`` targets.
-
-Build an image:
-
-```bash
-$ make opensuse
 ```
-
-Ensure an image is working as expected:
-
-```bash
-$ make check-opensuse
-The answer is: 42
-```
-
-Start up a container and log in directly to an LFE REPL:
-
-```
-$ make lfe-opensuse
-Erlang/OTP 19 [erts-8.1] [source-77fb4f8] [64-bit] [smp:4:4] [async...
+Erlang/OTP 21 [erts-10.3.5] [source] [64-bit] [smp:6:6] [ds:6:6:10] [async-threads:1] [hipe]
 
    ..-~.~_~---..
   (      \\     )    |   A Lisp-2+ on the Erlang VM
@@ -121,14 +69,84 @@ Erlang/OTP 19 [erts-8.1] [source-77fb4f8] [64-bit] [smp:4:4] [async...
     \   r     /      |   LFE v1.3-dev (abort with ^G)
      `-E___.-'
 
-lfe>
+lfe> 
+```
+
+From here, we can run some of the example code:
+```lisp
+lfe> (slurp '"examples/gps1.lfe")
+```
+```lisp
+#(ok gps1)
+```
+```lisp
+lfe> (gps '(son-at-home car-needs-battery have-money have-phone-book)
+lfe>      '(son-at-school)
+lfe>      (school-ops))
+```
+```
+executing 'look-up-number'
+executing 'telephone-shop'
+executing 'tell-shop-problem'
+executing 'give-shop-money'
+executing 'shop-installs-battery'
+executing 'drive-son-to-school'
+solved
 ```
 
 
-Start up a container and log in directly to a Bash shell:
+### Running Examples [&#x219F;](#table-of-contents)
 
-```bash
-$ make bash-opensuse
-0c66429e657e:/ #
+Some of the LFE example modules have been compiled in these Docker images for 
+your testing convenience. How they are run depends upon each example. For 
+instance, here's how to run the LFE port of the classic Erlang "Ring" example:
+
+```
+$ docker run lfex/lfe:1.3-21.3-alpine -pa examples/ebin -noshell -run ring main 503 50000000
 ```
 
+Note that, because these Docker images use `ENTRYPOINT`, they can be run just 
+like you run the install `lfe` binary on a system, complete with command line 
+flags. The only difference is that instead of typing `lfe` in the terminal, 
+we type `docker run lfex/lfe:1.3-20.3-alpine`.
+
+This will run for a while, then you'll get the expected output:
+```
+Result: 292
+```
+
+Another example, based on 
+http://joearms.github.io/2013/11/21/My-favorite-erlang-program.html, will take 
+_quite_ a while to finish:
+
+```
+$ docker run lfex/lfe:1.3-18.3-slim -pa examples/ebin -noshell -run joes-fav run-it
+```
+```
+30414093201713378043612608166064768844377641568960512000000000000
+```
+
+Those are example modules; you can also run the LFE example scripts by changing
+the entry point:
+
+```
+$ docker run --entrypoint=examples/sample-lfescript lfex/lfe:1.3-20.3-standard
+```
+This will give us an error, since we didn't pass it the correct argument type:
+```
+usage: examples/sample-lfescript <integer>
+```
+Let's try again:
+```
+$ docker run --entrypoint=examples/sample-lfescript lfex/lfe:1.3-20.3-standard 10
+```
+```
+factorial 10 = 3628800
+```
+Or another script example:
+```
+$ docker run --entrypoint=examples/sample-lfe-shellscript lfex/lfe:1.3-19.3-slim 5
+```
+```
+factorial 5 = 120
+```

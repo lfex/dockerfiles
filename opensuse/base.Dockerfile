@@ -1,1 +1,0 @@
-FROM opensuse:tumbleweed

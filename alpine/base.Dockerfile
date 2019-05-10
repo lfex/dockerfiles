@@ -1,0 +1,1 @@
+FROM erlang:{{VERSION}}-alpine

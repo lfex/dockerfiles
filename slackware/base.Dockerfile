@@ -1,1 +1,0 @@
-FROM vbatts/slackware

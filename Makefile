@@ -1,240 +1,93 @@
-TAG_PREFIX = lfex/
+LFE_VERSION = 1.3
+ERL_VERSIONS_STD = 17.5 18.3 19.3 20.3 21.3
+ERL_VERSIONS_SLIM = 18.3 19.3 20.3 21.3
+ERL_VERSIONS_ALPINE = 20.3 21.3
+TAG_PREFIX = lfex/lfe
+BUILD_DIR = build
+LFE_REPO = git@github.com:oubiwann/lfe.git
+LFE_BRANCH = bleeding-edge
 
-all: clean build-all
+# tags should be of the form:
+# lfex/lfe:1.3-20.3-standard
+# lfex/lfe:1.3-19.3-slim
+# lfex/lfe:1.3-18.3-alpine
 
-build-all: opensuse debian ubuntu arch centos oracle fedora tinycore
+all: clean update-erlang build-all
 
-setup:
-	@echo "Run the following in your shell:"
-	@echo '  $$(boot2docker shellinit)'
+build-all: standard slim alpine
 
-.PHONY: setup opensuse debian ubuntu arch slackware centos oracle fedora tinycore
+build-publish-all: all push
 
-check: check-opensuse check-debian check-ubuntu check-arch check-centos check-oracle check-fedora check-tinycore
-
-push: check clean push-all
-
-push-all: push-opensuse push-debian push-ubuntu push-arch push-centos push-oracle push-fedora push-tinycore
+.PHONY: standard slim alpine push
 
 clean:
 	@-docker rm `docker ps -a -q`
 	@-docker rmi `docker images -q --filter 'dangling=true'`
+	@rm -rf $(BUILD_DIR)
+
+$(BUILD_DIR):
+	mkdir $(BUILD_DIR)
+	git clone $(LFE_REPO) $(BUILD_DIR)/lfe
+	cd $(BUILD_DIR)/lfe && git checkout $(LFE_BRANCH)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Common to all
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-dockerfile: TAG = $(TAG_PREFIX)$(SYSTEM)
-dockerfile:
-	@cat common/head.Dockerfile > $(SYSTEM)/Dockerfile
-	@cat common/caveat.Dockerfile >> $(SYSTEM)/Dockerfile
-	@cat common/version.Dockerfile >> $(SYSTEM)/Dockerfile
-	@cat $(SYSTEM)/base.Dockerfile >> $(SYSTEM)/Dockerfile
-	@cat common/maintainer.Dockerfile >> $(SYSTEM)/Dockerfile
-	@cat $(SYSTEM)/system.Dockerfile >> $(SYSTEM)/Dockerfile
-	@cat common/lfe-setup.Dockerfile >> $(SYSTEM)/Dockerfile
-	@docker build -t $(TAG) $(SYSTEM)
+dockerfile: TAG = $(TAG_PREFIX):$(LFE_VERSION)-$(ERL_VERSION)-$(IMG_TYPE)
+dockerfile: $(BUILD_DIR)
+	@cat common/head.Dockerfile > $(BUILD_DIR)/Dockerfile
+	@cat common/caveat.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@cat $(IMG_TYPE)/base.Dockerfile | sed s'/{{VERSION}}/$(ERL_VERSION)/' >> $(BUILD_DIR)/Dockerfile
+	@cat common/lfe-setup.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@cat $(IMG_TYPE)/system.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@cat common/lfe-compile.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@cat $(IMG_TYPE)/cleanup.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@cat common/finish.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@docker build -t $(TAG) $(BUILD_DIR)
 
 check-lfe:
-	@echo "Checking LFE for lfex/$(SYSTEM) ..."
-	@docker run -t  $(TAG_PREFIX)$(SYSTEM)
+	@echo "Checking LFE for lfex/$(IMG_TYPE) ..."
+	@docker run -t  $(TAG_PREFIX)$(IMG_TYPE)
 
 lfe:
-	@docker run -i -t $(TAG_PREFIX)$(SYSTEM) lfe
+	@docker run -i -t $(TAG_PREFIX)$(IMG_TYPE) lfe
 
 bash:
-	@docker run -i -t $(TAG_PREFIX)$(SYSTEM) bash
+	@docker run -i -t $(TAG_PREFIX)$(IMG_TYPE) bash
 
+dockerhub-push: TAG = $(TAG_PREFIX):$(LFE_VERSION)-$(ERL_VERSION)-$(IMG_TYPE)
 dockerhub-push:
-	@docker push $(TAG_PREFIX)$(SYSTEM)
+	@docker push $(TAG)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# openSUSE
+# Image Types
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-opensuse:
-	@SYSTEM=opensuse make dockerfile
+update-erlang:
+	@for EV in $(ERL_VERSIONS_STD); do ERL_VERSION=$$EV \
+	docker pull erlang:$$EV; done
+	@for EV in $(ERL_VERSIONS_SLIM); do ERL_VERSION=$$EV \
+	docker pull erlang:$$EV-slim; done
+	@for EV in $(ERL_VERSIONS_ALPINE); do ERL_VERSION=$$EV \
+	docker pull erlang:$$EV-alpine; done
 
-check-opensuse:
-	@SYSTEM=opensuse make check-lfe
+standard:
+	@for EV in $(ERL_VERSIONS_STD); do IMG_TYPE=standard ERL_VERSION=$$EV \
+	$(MAKE) dockerfile ; done
 
-lfe-opensuse:
-	@SYSTEM=opensuse make lfe
+slim:
+	@for EV in $(ERL_VERSIONS_SLIM); do IMG_TYPE=slim ERL_VERSION=$$EV \
+	$(MAKE) dockerfile ; done
 
-bash-opensuse:
-	@SYSTEM=opensuse make bash
-
-push-opensuse:
-	@SYSTEM=opensuse make dockerhub-push
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Debian
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-debian:
-	@SYSTEM=debian make dockerfile
-
-check-debian:
-	@SYSTEM=debian make check-lfe
-
-lfe-debian:
-	@SYSTEM=debian make lfe
-
-bash-debian:
-	@SYSTEM=debian make bash
-
-push-debian:
-	@SYSTEM=debian make dockerhub-push
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Ubuntu
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-ubuntu:
-	@SYSTEM=ubuntu make dockerfile
-
-check-ubuntu:
-	@SYSTEM=ubuntu make check-lfe
-
-lfe-ubuntu:
-	@SYSTEM=ubuntu make lfe
-
-bash-ubuntu:
-	@SYSTEM=ubuntu make bash
-
-push-ubuntu:
-	@SYSTEM=ubuntu make dockerhub-push
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Arch
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-arch:
-	@SYSTEM=arch make dockerfile
-
-check-arch:
-	@SYSTEM=arch make check-lfe
-
-lfe-arch:
-	@SYSTEM=arch make lfe
-
-bash-arch:
-	@SYSTEM=arch make bash
-
-push-arch:
-	@SYSTEM=arch make dockerhub-push
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Slackware
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-slackware:
-	@SYSTEM=slackware make dockerfile
-
-check-slackware:
-	@SYSTEM=slackware make check-lfe
-
-lfe-slackware:
-	@SYSTEM=slackware make lfe
-
-bash-slackware:
-	@SYSTEM=slackware make bash
-
-push-slackware:
-	@SYSTEM=slackware make dockerhub-push
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# CentOS
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-centos:
-	@SYSTEM=centos make dockerfile
-
-check-centos:
-	@SYSTEM=centos make check-lfe
-
-lfe-centos:
-	@SYSTEM=centos make lfe
-
-bash-centos:
-	@SYSTEM=centos make bash
-
-push-centos:
-	@SYSTEM=centos make dockerhub-push
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Oracle Linux
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-oracle:
-	@SYSTEM=oracle make dockerfile
-
-check-oracle:
-	@SYSTEM=oracle make check-lfe
-
-lfe-oracle:
-	@SYSTEM=oracle make lfe
-
-bash-oracle:
-	@SYSTEM=oracle make bash
-
-push-oracle:
-	@SYSTEM=oracle make dockerhub-push
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Raspbian
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-raspbian:
-	@SYSTEM=raspbian make dockerfile
-
-check-raspbian:
-	@SYSTEM=raspbian make check-lfe
-
-lfe-raspbian:
-	@SYSTEM=raspbian make lfe
-
-bash-raspbian:
-	@SYSTEM=raspbian make bash
-
-push-raspbian:
-	@SYSTEM=raspbian make dockerhub-push
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Fedora
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-fedora:
-	@SYSTEM=fedora make dockerfile
-
-check-fedora:
-	@SYSTEM=fedora make check-lfe
-
-lfe-fedora:
-	@SYSTEM=fedora make lfe
-
-bash-fedora:
-	@SYSTEM=fedora make bash
-
-push-fedora:
-	@SYSTEM=fedora make dockerhub-push
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Tiny Core
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-tinycore:
-	@SYSTEM=tinycore make dockerfile
-
-check-tinycore:
-	@SYSTEM=tinycore make check-lfe
-
-lfe-tinycore:
-	@SYSTEM=tinycore make lfe
-
-bash-tinycore:
-	@SYSTEM=tinycore make bash
-
-push-tinycore:
-	@SYSTEM=tinycore make dockerhub-push
-
+alpine:
+	@for EV in $(ERL_VERSIONS_ALPINE); do IMG_TYPE=alpine ERL_VERSION=$$EV \
+	$(MAKE) dockerfile ; done
+	
+push:
+	@for EV in $(ERL_VERSIONS_STD); do IMG_TYPE=standard ERL_VERSION=$$EV \
+	$(MAKE) dockerhub-push ; done
+	@for EV in $(ERL_VERSIONS_SLIM); do IMG_TYPE=slim ERL_VERSION=$$EV \
+	$(MAKE) dockerhub-push ; done
+	@for EV in $(ERL_VERSIONS_ALPINE); do IMG_TYPE=alpine ERL_VERSION=$$EV \
+	$(MAKE) dockerhub-push ; done

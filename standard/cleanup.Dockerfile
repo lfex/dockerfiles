@@ -1,0 +1,1 @@
+    echo "No cleanup for standard image ..."

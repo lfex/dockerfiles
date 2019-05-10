@@ -1,0 +1,2 @@
+
+ENTRYPOINT [ "lfe" ]

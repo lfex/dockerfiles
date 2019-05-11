@@ -9,6 +9,11 @@ ERL_VERSIONS_ALPINE = $(ERL_VERSIONS_NEW)
 OFFICIAL_TYPE = alpine
 TAG_PREFIX = lfex/lfe
 BUILD_DIR = build
+# XXX Note that, for right now, the bleeding-edge branch in the lfe/lfe repo
+#     needs to be used in order to properly and cleaning use LFE as an 
+#     entry point in the Docker images. Once rvirding/lfe has merged the PRs
+#     which contain the appropriate fixes, future versioned LFE Docker images
+#     can be built using rvirding/lfe + version tag.
 LFE_REPO = git@github.com:lfe/lfe.git
 LFE_BRANCH = bleeding-edge
 

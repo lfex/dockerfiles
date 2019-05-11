@@ -1,10 +1,12 @@
 LFE_VERSION = 1.3
-ERL_VERSIONS_NEW = 20.3 21.3
+LATEST_ERL = 21.3
+ERL_VERSIONS_NEW = 20.3 $(LATEST_ERL)
 ERL_VERSIONS_MID = 18.3 19.3
 ERL_VERSIONS_OLD = 17.5
 ERL_VERSIONS_STD =  $(ERL_VERSIONS_OLD) $(ERL_VERSIONS_MID) $(ERL_VERSIONS_NEW)
 ERL_VERSIONS_SLIM = $(ERL_VERSIONS_MID) $(ERL_VERSIONS_NEW)
 ERL_VERSIONS_ALPINE = $(ERL_VERSIONS_NEW)
+OFFICIAL_TYPE = alpine
 TAG_PREFIX = lfex/lfe
 BUILD_DIR = build
 LFE_REPO = git@github.com:oubiwann/lfe.git
@@ -19,7 +21,7 @@ all: clean update-erlang build-all
 
 build-all: standard slim alpine
 
-build-publish-all: all push
+build-push-all: all push push-latest
 
 .PHONY: standard slim alpine push
 
@@ -94,3 +96,7 @@ push:
 	$(MAKE) dockerhub-push ; done
 	@for EV in $(ERL_VERSIONS_ALPINE); do IMG_TYPE=alpine ERL_VERSION=$$EV \
 	$(MAKE) dockerhub-push ; done
+
+push-latest:
+	@docker tag $(TAG_PREFIX):$(LFE_VERSION)-$(LATEST_ERL)-$(OFFICIAL_TYPE) $(TAG_PREFIX):latest
+	@docker push $(TAG_PREFIX):latest

@@ -51,6 +51,21 @@ For example, LFE v1.3 running on Erlang 20.3 in an Alpine-based container would 
 lfex/lfe:1.3-20.3-alpine
 ```
 
+Note that the Alpine image is considered the canonical one, thus the `latest`
+tag is against an Alpine image with the most recent release of LFE and Erlang.
+If this is what you want, than simply using either of the following will pull
+this down:
+
+```
+$ docker run -it lfex/lfe:latest
+```
+
+or
+
+```
+$ docker run -it lfex/lfe
+```
+
 All published LFE Docker images are available here:
 
 - [https://hub.docker.com/r/lfex/lfe/tags](https://hub.docker.com/r/lfex/lfe/tags)
@@ -62,7 +77,7 @@ All published LFE Docker images are available here:
 Running an LFE REPL in any of the provided images is as simple as the following:
 
 ```
-$ docker run -it lfex/lfe:1.3-21.3-alpine
+$ docker run -it lfex/lfe
 ```
 
 ```
@@ -90,7 +105,7 @@ your testing convenience. How they are run depends upon each example. For
 instance, here's how to run the LFE port of the classic Erlang "ring" example:
 
 ```
-$ docker run lfex/lfe:1.3-21.3-alpine -pa examples/ebin -noshell -run ring main 503 50000000
+$ docker run lfex/lfe -pa examples/ebin -noshell -run ring main 503 50000000
 ```
 
 Note that, because these Docker images use `ENTRYPOINT`, they can be run just
@@ -121,7 +136,7 @@ $ docker run lfex/lfe:1.3-18.3-slim -pa examples/ebin -noshell -run joes-fav run
 For interactive modules where you don't need the LFE prompt:
 
 ```
-$ docker run -i lfex/lfe:1.3-21.3-alpine \
+$ docker run -i lfex/lfe \
   -pa examples/ebin -noshell -run guessing-game main
 ```
 
@@ -142,7 +157,7 @@ Church numerals in LFE. To use it, you just need to include the `examples/ebin`
 in the Elrang modules path:
 
 ```
-$ docker run -it lfex/lfe:1.3-21.3-alpine -pa examples/ebin
+$ docker run -it lfex/lfe:latest -pa examples/ebin
 ```
 
 ```lisp
@@ -190,7 +205,7 @@ compiled, but instead simply run in a REPL session), we can just use `slurp`.
 Here's the General Problem Solver LFE example using this approach:
 
 ```
-$ docker run -it lfex/lfe:1.3-21.3-alpine
+$ docker run -it lfex/lfe
 ```
 
 ```lisp
@@ -234,8 +249,7 @@ usage: examples/sample-lfescript <integer>
 Now that we know what to do, thanks to the usage message, let's try again:
 
 ```
-$ docker run --entrypoint=examples/sample-lfescript \
-   lfex/lfe:1.3-20.3-standard 10
+$ docker run --entrypoint=examples/sample-lfescript lfex/lfe:1.3-20.3-slim 10
 ```
 
 ```
@@ -245,8 +259,7 @@ factorial 10 = 3628800
 Or another script example:
 
 ```
-$ docker run --entrypoint=examples/sample-lfe-shellscript \
-   lfex/lfe:1.3-19.3-slim 5
+$ docker run --entrypoint=examples/sample-lfe-shellscript lfex/lfe 5
 ```
 
 ```

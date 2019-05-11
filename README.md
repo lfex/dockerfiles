@@ -1,12 +1,14 @@
 # dockerfiles
 
-_Dockerfiles for LFE on various distributions_
+_Dockerfiles for LFE based upon the official Erlang Docker images_
 
 <image src="resources/images/docker-thumb.png" />
 
-**Table of Contents**
+##### Table of Contents
 
 - [About](#about-)
+  - [LFE](#lfe-)
+  - [Images](#images-)
 - [Usage](#usage-)
   - [Instant REPL](#instant-repl-)
   - [Running Examples](#running-examples-)
@@ -15,8 +17,18 @@ _Dockerfiles for LFE on various distributions_
     - Precompiled Modules via LFE REPL
     - Slurping Modules via LFE REPL
     - Scripts
+- [License](#license-)
+- [User Feedback](#user-feedback-)
+  - [Issues](#issues-)
+  - [Contributing](#contributing-)
 
 ## About [&#x219F;](#table-of-contents)
+
+### LFE [&#x219F;](#table-of-contents)
+
+<img align="right" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/LFE_%28Lisp_Flavored_Erlang%29_Logo.png/240px-LFE_%28Lisp_Flavored_Erlang%29_Logo.png" />LFE (Lisp Flavored Erlang) is a functional, concurrent, general-purpose programming language and Lisp dialect built on top of Core Erlang and the Erlang Virtual Machine (BEAM). LFE builds on top of Erlang in order to provide a Lisp syntax for writing distributed, fault-tolerant, soft real-time, non-stop applications. LFE also extends Erlang to support meta-programming with Lisp macros and an improved developer experience with a feature-rich REPL.
+
+### Images [&#x219F;](#table-of-contents)
 
 This repository provides a handful of LFE `Dockerfile`s based on similar
 Erlang docker files (available [here](https://hub.docker.com/_/erlang)):
@@ -42,7 +54,7 @@ available:
 The LFE images are published with tags in the following format:
 
 ```
-<org>/<project>:<lfe-version>-<erlang-version>-<image-type>
+[org]/[project]:[lfe-version]-[erlang-version]-[image-type]
 ```
 
 For example, LFE v1.3 running on Erlang 20.3 in an Alpine-based container would be:
@@ -265,3 +277,33 @@ $ docker run --entrypoint=examples/sample-lfe-shellscript lfex/lfe 5
 ```
 factorial 5 = 120
 ```
+
+## License [&#x219F;](#table-of-contents)
+
+View [license information](https://github.com/lfe/lfe/blob/master/LICENSE)
+for the software contained in this image.
+
+## User Feedback [&#x219F;](#table-of-contents)
+
+### Issues [&#x219F;](#table-of-contents)
+
+If you have any problems with or questions about this image, please contact us
+by submitting an issue:
+
+- for the [Docker images themselves](https://github.com/lfex/dockerfiles/issues)
+- with the [LFE programming language](https://github.com/rvirding/lfe/issues)
+
+You can also reach many of the official image maintainers via the
+`#docker-library` IRC channel on [Freenode](https://freenode.net).
+
+### Contributing [&#x219F;](#table-of-contents)
+
+You are invited to contribute new features, fixes, or updates, large or small;
+we are always thrilled to receive pull requests, and do our best to process them
+as fast as we can.
+
+Before you start to code, we recommend discussing your plans
+through a [GitHub feature issue](https://github.com/rvirding/lfe/issues),
+especially for more ambitious contributions. This gives other contributors a
+chance to point you in the right direction, give you feedback on your design,
+and help you find out if someone else is working on the same thing.

@@ -10,6 +10,11 @@ _Dockerfiles for LFE on various distributions_
 - [Usage](#usage-)
   - [Instant REPL](#instant-repl-)
   - [Running Examples](#running-examples-)
+    - Modules Via CLI
+    - Interactive Modules via `main`
+    - Precompiled Modules via LFE REPL
+    - Slurping Modules via LFE REPL
+    - Scripts
 
 ## About [&#x219F;](#table-of-contents)
 
@@ -57,7 +62,7 @@ All published LFE Docker images are available here:
 Running an LFE REPL in any of the provided images is as simple as the following:
 
 ```
-$ docker run -i -t lfex/lfe:1.3-21.3-alpine
+$ docker run -it lfex/lfe:1.3-21.3-alpine
 ```
 
 ```
@@ -76,35 +81,9 @@ Erlang/OTP 21 [erts-10.3.5] [source] [64-bit] [smp:6:6] [ds:6:6:10] [async-threa
 lfe>
 ```
 
-From here, we can run some of the example code:
-
-```lisp
-lfe> (slurp '"examples/gps1.lfe")
-```
-
-```lisp
-#(ok gps1)
-```
-
-```lisp
-lfe> (gps '(son-at-home car-needs-battery have-money have-phone-book)
-lfe>      '(son-at-school)
-lfe>      (school-ops))
-```
-
-```
-executing 'look-up-number'
-executing 'telephone-shop'
-executing 'tell-shop-problem'
-executing 'give-shop-money'
-executing 'shop-installs-battery'
-executing 'drive-son-to-school'
-solved
-```
-
 ### Running Examples [&#x219F;](#table-of-contents)
 
-#### Modules
+#### Modules Via CLI
 
 Some of the LFE example modules have been compiled in these Docker images for
 your testing convenience. How they are run depends upon each example. For
@@ -137,6 +116,8 @@ $ docker run lfex/lfe:1.3-18.3-slim -pa examples/ebin -noshell -run joes-fav run
 30414093201713378043612608166064768844377641568960512000000000000
 ```
 
+#### Interactive Modules via `main`
+
 For interactive modules where you don't need the LFE prompt:
 
 ```
@@ -154,6 +135,8 @@ Guess number: 5
 Well-guessed!!
 ```
 
+#### Precompiled Modules via LFE REPL
+
 Another pre-compiled module in the Docker images is the one demonstrating
 Church numerals in LFE. To use it, you just need to include the `examples/ebin`
 in the Elrang modules path:
@@ -169,6 +152,69 @@ lfe> (church:get-church 10)
 #Fun<church.7.125931718>
 lfe> (church:church->int1 (church:get-church 20))
 20
+```
+
+Another pre-compiled example, utilizing Erlang inboxes and message-passing:
+
+```lisp
+lfe> (messenger-back:send-message (self) "Well, I was able to extend the original entry a bit, yes.")
+#(#Pid<0.80.0> "Well, I was able to extend the original entry a bit, yes.")
+Received message: 'Well, I was able to extend the original entry a bit, yes.'
+Sending message to process <0.80.0> ...
+lfe> (messenger-back:send-message (self) "And what does it say now?")
+#(#Pid<0.80.0> "And what does it say now?")
+Received message: 'And what does it say now?'
+Sending message to process <0.80.0> ...
+lfe> (messenger-back:send-message (self) "Mostly harmless.")
+#(#Pid<0.80.0> "Mostly harmless.")
+Received message: 'Mostly harmless.'
+Sending message to process <0.80.0> ...
+```
+
+Then, we can flush the REPL process' inbox to see all the messages it has
+received:
+
+```lisp
+(c:flush)
+Shell got {"Well, I was able to extend the original entry a bit, yes."}
+Shell got {"And what does it say now?"}
+Shell got {"Mostly harmless."}
+ok
+```
+
+#### Slurping Modules via LFE REPL
+
+If we wanted to run one of the LFE examples that is not pre-compiled (or, as
+is the case for the following example, run code that is not meant to be
+compiled, but instead simply run in a REPL session), we can just use `slurp`.
+Here's the General Problem Solver LFE example using this approach:
+
+```
+$ docker run -it lfex/lfe:1.3-21.3-alpine
+```
+
+```lisp
+lfe> (slurp "examples/gps1.lfe")
+```
+
+```lisp
+#(ok gps1)
+```
+
+```lisp
+lfe> (gps '(son-at-home car-needs-battery have-money have-phone-book)
+lfe>      '(son-at-school)
+lfe>      (school-ops))
+```
+
+```
+executing 'look-up-number'
+executing 'telephone-shop'
+executing 'tell-shop-problem'
+executing 'give-shop-money'
+executing 'shop-installs-battery'
+executing 'drive-son-to-school'
+solved
 ```
 
 #### Scripts

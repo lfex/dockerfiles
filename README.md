@@ -82,6 +82,37 @@ All published LFE Docker images are available here:
 
 - [https://hub.docker.com/r/lfex/lfe/tags](https://hub.docker.com/r/lfex/lfe/tags)
 
+Comparison of LFE and Erlang image types and their sizes:
+
+| REPOSITORY | TAG               | SIZE   |
+|------------|-------------------|--------|
+| lfex/lfe   | latest            | 80.1MB |
+| lfex/lfe   | 1.3-21.3-alpine   | 80.1MB |
+| lfex/lfe   | 1.3-20.3-alpine   | 84MB   |
+| lfex/lfe   | 1.3-21.3-slim     | 258MB  |
+| lfex/lfe   | 1.3-20.3-slim     | 266MB  |
+| lfex/lfe   | 1.3-19.3-slim     | 523MB  |
+| lfex/lfe   | 1.3-18.3-slim     | 277MB  |
+| lfex/lfe   | 1.3-21.3-standard | 1.07GB |
+| lfex/lfe   | 1.3-20.3-standard | 1.08GB |
+| lfex/lfe   | 1.3-19.3-standard | 1.1GB  |
+| lfex/lfe   | 1.3-18.3-standard | 1.1GB  |
+| lfex/lfe   | 1.3-17.5-standard | 753MB  |
+
+| REPOSITORY | TAG               | SIZE   |
+|------------|-------------------|--------|
+| erlang     | 21.3-alpine       | 73.3MB |
+| erlang     | 20.3-alpine       | 77.2MB |
+| erlang     | 21.3-slim         | 251MB  |
+| erlang     | 20.3-slim         | 258MB  |
+| erlang     | 19.3-slim         | 515MB  |
+| erlang     | 18.3-slim         | 270MB  |
+| erlang     | 21.3              | 1.07GB |
+| erlang     | 20.3              | 1.07GB |
+| erlang     | 19.3              | 1.09GB |
+| erlang     | 18.3              | 1.09GB |
+| erlang     | 17.5              | 746MB |
+
 ## Usage [&#x219F;](#table-of-contents)
 
 ### Instant REPL [&#x219F;](#table-of-contents)

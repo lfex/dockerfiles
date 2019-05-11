@@ -12,7 +12,7 @@ _Dockerfiles for LFE based upon the official Erlang Docker images_
 - [Usage](#usage-)
   - [Instant REPL](#instant-repl-)
   - [Running Examples](#running-examples-)
-    - Modules Via CLI
+    - Modules via CLI
     - Interactive Modules via `main`
     - Precompiled Modules via LFE REPL
     - Slurping Modules via LFE REPL
@@ -141,7 +141,7 @@ lfe>
 
 ### Running Examples [&#x219F;](#table-of-contents)
 
-#### Modules Via CLI
+#### Modules via CLI
 
 Some of the LFE example modules have been compiled in these Docker images for
 your testing convenience. How they are run depends upon each example. For

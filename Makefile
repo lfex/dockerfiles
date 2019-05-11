@@ -9,7 +9,7 @@ ERL_VERSIONS_ALPINE = $(ERL_VERSIONS_NEW)
 OFFICIAL_TYPE = alpine
 TAG_PREFIX = lfex/lfe
 BUILD_DIR = build
-LFE_REPO = git@github.com:oubiwann/lfe.git
+LFE_REPO = git@github.com:lfe/lfe.git
 LFE_BRANCH = bleeding-edge
 
 # tags should be of the form:

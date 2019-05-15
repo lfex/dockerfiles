@@ -113,6 +113,21 @@ Comparison of LFE and Erlang image types and their sizes:
 | erlang     | 18.3              | 1.09GB |
 | erlang     | 17.5              | 746MB |
 
+In addition to the LFE images, a set of YAWS images is provided as well. These 
+use the same versioning convention as the lfex/lfe images, but live in the
+lfex/yaws repository Only the latest version of YAWS is supported (2.0.6, at 
+the time of this writing).
+
+To run a vanilla YAWS from a Docker images:
+
+```
+$ docker run -t -p 8000:8000 lfex/yaws 
+```
+
+Then visit http://localhost:8000 and for the Basic Auth prompt, enter user 
+`foo` and password `bar`.
+
+
 ## Usage [&#x219F;](#table-of-contents)
 
 ### Instant REPL [&#x219F;](#table-of-contents)

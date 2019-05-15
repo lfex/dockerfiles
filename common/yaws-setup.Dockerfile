@@ -1,0 +1,5 @@
+ENV YAWS_HOME /opt/erlang/yaws
+ENV PATH $PATH:$YAWS_HOME/bin
+
+WORKDIR $YAWS_HOME
+COPY yaws $YAWS_HOME/

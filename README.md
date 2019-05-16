@@ -50,6 +50,7 @@ available:
 - 19.3 (standard and slim)
 - 20.3 (all)
 - 21.3 (all)
+- 22.0 (all)
 
 The LFE images are published with tags in the following format:
 
@@ -78,6 +79,11 @@ or
 $ docker run -it lfex/lfe
 ```
 
+Additionally, the following latest versions are also provided as a convenience:
+
+* lfex/lfe:latest-standard
+* lfex/lfe:latest-slim
+
 All published LFE Docker images are available here:
 
 - [https://hub.docker.com/r/lfex/lfe/tags](https://hub.docker.com/r/lfex/lfe/tags)
@@ -87,12 +93,15 @@ Comparison of LFE and Erlang image types and their sizes:
 | REPOSITORY | TAG               | SIZE   |
 |------------|-------------------|--------|
 | lfex/lfe   | latest            | 80.1MB |
+| lfex/lfe   | 1.3-22.0-alpine   | 80.1MB |
 | lfex/lfe   | 1.3-21.3-alpine   | 80.1MB |
 | lfex/lfe   | 1.3-20.3-alpine   | 84MB   |
+| lfex/lfe   | 1.3-22.0-slim     | 261MB  |
 | lfex/lfe   | 1.3-21.3-slim     | 258MB  |
 | lfex/lfe   | 1.3-20.3-slim     | 266MB  |
 | lfex/lfe   | 1.3-19.3-slim     | 523MB  |
 | lfex/lfe   | 1.3-18.3-slim     | 277MB  |
+| lfex/lfe   | 1.3-22.0-standard | 1.08GB |
 | lfex/lfe   | 1.3-21.3-standard | 1.07GB |
 | lfex/lfe   | 1.3-20.3-standard | 1.08GB |
 | lfex/lfe   | 1.3-19.3-standard | 1.1GB  |
@@ -101,17 +110,20 @@ Comparison of LFE and Erlang image types and their sizes:
 
 | REPOSITORY | TAG               | SIZE   |
 |------------|-------------------|--------|
+| erlang     | 22.0-alpine       | 73.4MB |
 | erlang     | 21.3-alpine       | 73.3MB |
 | erlang     | 20.3-alpine       | 77.2MB |
+| erlang     | 22.0-slim         | 253MB  |
 | erlang     | 21.3-slim         | 251MB  |
 | erlang     | 20.3-slim         | 258MB  |
 | erlang     | 19.3-slim         | 515MB  |
 | erlang     | 18.3-slim         | 270MB  |
+| erlang     | 22.0              | 1.07GB |
 | erlang     | 21.3              | 1.07GB |
 | erlang     | 20.3              | 1.07GB |
 | erlang     | 19.3              | 1.09GB |
 | erlang     | 18.3              | 1.09GB |
-| erlang     | 17.5              | 746MB |
+| erlang     | 17.5              | 746MB  |
 
 In addition to the LFE images, a set of YAWS images is provided as well. These 
 use the same versioning convention as the lfex/lfe images, but live in the
@@ -121,11 +133,12 @@ the time of this writing).
 To run a vanilla YAWS from a Docker images:
 
 ```
-$ docker run -t -p 8000:8000 lfex/yaws 
+$ docker run -t -p 80:8000 -p 443:4443 lfex/yaws
 ```
 
-Then visit http://localhost:8000 and for the Basic Auth prompt, enter user 
-`foo` and password `bar`.
+Then visit http://localhost or https://localhost (if you test the SSL site, 
+you'll need to grant a security exception for the self-signed certs). For the 
+Basic Auth prompt, enter user `foo` and password `bar`.
 
 
 ## Usage [&#x219F;](#table-of-contents)

@@ -1,1 +1,1 @@
-    echo "No cleanup for standard image ..."
+    echo "No custom cleanup for standard image ..."

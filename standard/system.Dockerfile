@@ -1,1 +1,1 @@
-RUN echo "No system setup for standard image ..." && \
+RUN echo "No custom system setup for standard image ..." && \

@@ -1,6 +1,6 @@
 LFE_VERSION = 1.3
-LATEST_ERL = 22.0
-ERL_VERSIONS_NEW = 20.3 21.3 $(LATEST_ERL)
+LATEST_ERL = 23.0
+ERL_VERSIONS_NEW = 20.3 21.3 22.3 $(LATEST_ERL)
 ERL_VERSIONS_MID = 18.3 19.3
 ERL_VERSIONS_OLD = 17.5
 ERL_VERSIONS_STD =  $(ERL_VERSIONS_OLD) $(ERL_VERSIONS_MID) $(ERL_VERSIONS_NEW)
@@ -11,7 +11,7 @@ TAG_PREFIX = lfex/lfe
 YAWS_TAG_PREFIX = lfex/yaws
 BUILD_DIR = build
 # XXX Note that, for right now, the bleeding-edge branch in the lfe/lfe repo
-#     needs to be used in order to properly and cleaning use LFE as an 
+#     needs to be used in order to properly and cleanly use LFE as an 
 #     entry point in the Docker images. Once rvirding/lfe has merged the PRs
 #     which contain the appropriate fixes, future versioned LFE Docker images
 #     can be built using rvirding/lfe + version tag.

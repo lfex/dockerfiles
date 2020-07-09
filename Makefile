@@ -111,6 +111,10 @@ yaws-dockerhub-push: TAG = $(YAWS_TAG_PREFIX):$(LFE_VERSION)-$(ERL_VERSION)-$(IM
 yaws-dockerhub-push:
 	@docker push $(TAG)
 
+docker-test: TAG = $(TAG_PREFIX):$(LFE_VERSION)-$(ERL_VERSION)-$(IMG_TYPE)
+docker-test:
+	@docker run $(TAG) -eval "(io:format \"~p~n\" (list (erlang:list_to_integer (lists:reverse (erlang:integer_to_list (lists:foldl #'*/2 1 '(1 2 3 4)))))))"
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Image Types
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -162,6 +166,14 @@ push-latest:
 	@docker push $(TAG_PREFIX):latest-slim
 	@docker tag $(TAG_PREFIX):$(LFE_VERSION)-$(LATEST_ERL)-$(OFFICIAL_TYPE) $(TAG_PREFIX):latest
 	@docker push $(TAG_PREFIX):latest
+
+docker-tests:
+	@for EV in $(ERL_VERSIONS_ALPINE); do IMG_TYPE=alpine ERL_VERSION=$$EV \
+	$(MAKE) docker-test ; done
+	@for EV in $(ERL_VERSIONS_SLIM); do IMG_TYPE=slim ERL_VERSION=$$EV \
+	$(MAKE) docker-test ; done
+	@for EV in $(ERL_VERSIONS_STD); do IMG_TYPE=standard ERL_VERSION=$$EV \
+	$(MAKE) docker-test ; done
 
 versions:
 	@echo REPOSITORY:TAG

@@ -99,6 +99,10 @@ lfe:
 bash:
 	@docker run -i -t $(TAG_PREFIX)$(IMG_TYPE) bash
 
+version: TAG = $(TAG_PREFIX):$(LFE_VERSION)-$(ERL_VERSION)-$(IMG_TYPE)
+version:
+	@echo $(TAG)
+
 dockerhub-push: TAG = $(TAG_PREFIX):$(LFE_VERSION)-$(ERL_VERSION)-$(IMG_TYPE)
 dockerhub-push:
 	@docker push $(TAG)
@@ -158,7 +162,19 @@ push-latest:
 	@docker push $(TAG_PREFIX):latest-slim
 	@docker tag $(TAG_PREFIX):$(LFE_VERSION)-$(LATEST_ERL)-$(OFFICIAL_TYPE) $(TAG_PREFIX):latest
 	@docker push $(TAG_PREFIX):latest
-	
+
+versions:
+	@echo REPOSITORY:TAG
+	@for EV in $(ERL_VERSIONS_ALPINE); do IMG_TYPE=alpine ERL_VERSION=$$EV \
+	$(MAKE) version ; done | sort -r
+	@for EV in $(ERL_VERSIONS_SLIM); do IMG_TYPE=slim ERL_VERSION=$$EV \
+	$(MAKE) version ; done | sort -r
+	@for EV in $(ERL_VERSIONS_STD); do IMG_TYPE=standard ERL_VERSION=$$EV \
+	$(MAKE) version ; done | sort -r
+	@echo $(TAG_PREFIX):latest
+
+image-sizes:
+	@docker images -f reference=lfex/lfe --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}"|grep -v '<none>'
 
 yaws-push:
 	@-for EV in $(ERL_VERSIONS_STD); do IMG_TYPE=standard ERL_VERSION=$$EV \

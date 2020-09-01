@@ -53,6 +53,9 @@ $(BUILD_DIR)/lfe: | $(BUILD_DIR)
 	@git clone $(LFE_REPO) $(BUILD_DIR)/lfe && \
 	cd $(BUILD_DIR)/lfe && git checkout $(LFE_BRANCH)
 
+$(BUILD_DIR)/x11: | $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)/x11
+
 $(BUILD_DIR)/yaws: | $(BUILD_DIR)
 	@git clone $(YAWS_REPO) $(BUILD_DIR)/yaws && \
 	cd $(BUILD_DIR)/yaws && git checkout $(YAWS_BRANCH)
@@ -73,6 +76,20 @@ $(BUILD_DIR)/lfe/.build: | $(BUILD_DIR)/lfe
 	@cat common/finish.Dockerfile >> $(BUILD_DIR)/Dockerfile
 	@docker build -t $(TAG) $(BUILD_DIR)
 
+$(BUILD_DIR)/x11/.build: TAG = $(TAG_PREFIX)-x11:$(LFE_VERSION)-$(ERL_VERSION)-alpine
+$(BUILD_DIR)/x11/.build: | $(BUILD_DIR)/x11
+	@cat common/head.Dockerfile > $(BUILD_DIR)/Dockerfile
+	@cat common/caveat.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@cat x11/base.Dockerfile | \
+	sed s'/{{LATEST_ERL}}/$(ERL_VERSION)/' | \
+	sed s'/{{LFE_VERSION}}/$(LFE_VERSION)/' >> $(BUILD_DIR)/Dockerfile
+	@cat x11/setup.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@cat x11/system.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@cat x11/cleanup.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@cat x11/finish.Dockerfile >> $(BUILD_DIR)/Dockerfile
+	@cp x11/supervisord.conf $(BUILD_DIR)/
+	@docker build -t $(TAG) $(BUILD_DIR)
+
 $(BUILD_DIR)/yaws/.build: TAG = $(YAWS_TAG_PREFIX):$(LFE_VERSION)-$(ERL_VERSION)-$(IMG_TYPE)
 $(BUILD_DIR)/yaws/.build: | $(BUILD_DIR)/yaws
 	@cat common/yaws-head.Dockerfile > $(BUILD_DIR)/Dockerfile
@@ -91,13 +108,22 @@ $(BUILD_DIR)/yaws/.build: | $(BUILD_DIR)/yaws
 
 check-lfe:
 	@echo "Checking LFE for lfex/$(IMG_TYPE) ..."
-	@docker run -t  $(TAG_PREFIX)$(IMG_TYPE)
+	@docker run -t $(TAG_PREFIX)$(IMG_TYPE)
 
 lfe:
-	@docker run -i -t $(TAG_PREFIX)$(IMG_TYPE) lfe
+	@docker run -it $(TAG_PREFIX)$(IMG_TYPE) lfe
 
 bash:
-	@docker run -i -t $(TAG_PREFIX)$(IMG_TYPE) bash
+	@docker run -it $(TAG_PREFIX)$(IMG_TYPE) bash
+
+run-x11: TAG = $(TAG_PREFIX)-x11:$(LFE_VERSION)-$(LATEST_ERL)-alpine
+run-x11:
+	@docker run -p 5900:5900 -e DISPLAY=:0 $(TAG)
+
+x11-bash: TAG = $(TAG_PREFIX)-x11:$(LFE_VERSION)-$(LATEST_ERL)-alpine
+x11-bash:
+	@docker run -it --entrypoint=bash $(TAG) 
+
 
 version: TAG = $(TAG_PREFIX):$(LFE_VERSION)-$(ERL_VERSION)-$(IMG_TYPE)
 version:
@@ -105,6 +131,10 @@ version:
 
 dockerhub-push: TAG = $(TAG_PREFIX):$(LFE_VERSION)-$(ERL_VERSION)-$(IMG_TYPE)
 dockerhub-push:
+	@docker push $(TAG)
+
+x11-dockerhub-push: TAG = $(TAG_PREFIX)-x11:$(LFE_VERSION)-$(ERL_VERSION)-alpine
+x11-dockerhub-push:
 	@docker push $(TAG)
 
 yaws-dockerhub-push: TAG = $(YAWS_TAG_PREFIX):$(LFE_VERSION)-$(ERL_VERSION)-$(IMG_TYPE)
@@ -139,6 +169,12 @@ alpine:
 	@for EV in $(ERL_VERSIONS_ALPINE); do IMG_TYPE=alpine ERL_VERSION=$$EV \
 	$(MAKE) $(BUILD_DIR)/lfe/.build ; done
 
+alpine-latest:
+	@IMG_TYPE=alpine ERL_VERSION=$(LATEST_ERL) $(MAKE) $(BUILD_DIR)/lfe/.build
+
+x11: alpine-latest clean
+	@ERL_VERSION=$(LATEST_ERL) $(MAKE) $(BUILD_DIR)/x11/.build
+
 yaws-standard:
 	@for EV in $(ERL_VERSIONS_STD); do IMG_TYPE=standard ERL_VERSION=$$EV \
 	LFE_VERSION=$(LFE_VERSION) $(MAKE) $(BUILD_DIR)/yaws/.build ; done
@@ -164,6 +200,8 @@ push-latest:
 	@docker push $(TAG_PREFIX):latest-standard
 	@docker tag $(TAG_PREFIX):$(LFE_VERSION)-$(LATEST_ERL)-slim $(TAG_PREFIX):latest-slim
 	@docker push $(TAG_PREFIX):latest-slim
+	@docker tag $(TAG_PREFIX):$(LFE_VERSION)-$(LATEST_ERL)-$(OFFICIAL_TYPE) $(TAG_PREFIX):latest-alpine
+	@docker push $(TAG_PREFIX):latest-alpine
 	@docker tag $(TAG_PREFIX):$(LFE_VERSION)-$(LATEST_ERL)-$(OFFICIAL_TYPE) $(TAG_PREFIX):latest
 	@docker push $(TAG_PREFIX):latest
 
@@ -187,6 +225,9 @@ versions:
 
 image-sizes:
 	@docker images -f reference=lfex/lfe --format="table {{.Repository}}:{{.Tag}}\t{{.Size}}"|grep -v '<none>'
+
+x11-push:
+	@ERL_VERSION=$(LATEST_ERL) $(MAKE) x11-dockerhub-push
 
 yaws-push:
 	@-for EV in $(ERL_VERSIONS_STD); do IMG_TYPE=standard ERL_VERSION=$$EV \

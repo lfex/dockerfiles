@@ -1,4 +1,4 @@
-LFE_VERSION = 1.3
+LFE_VERSION = 2.0
 LATEST_ERL = 23.0
 ERL_VERSIONS_NEW = 20.3 21.3 22.3 $(LATEST_ERL)
 ERL_VERSIONS_MID = 18.3 19.3
@@ -15,9 +15,10 @@ BUILD_DIR = build
 #     entry point in the Docker images. Once rvirding/lfe has merged the PRs
 #     which contain the appropriate fixes, future versioned LFE Docker images
 #     can be built using rvirding/lfe + version tag.
-LFE_REPO = git@github.com:lfe/lfe.git
-LFE_BRANCH = bleeding-edge
-YAWS_REPO = git@github.com:erlsci/yaws.git
+LFE_REPO = git@github.com:rvirding/lfe.git
+LFE_BRANCH = develop
+#YAWS_REPO = git@github.com:erlsci/yaws.git
+YAWS_REPO = git@github.com:erlyaws/yaws.git
 YAWS_BRANCH = rebar3-support
 
 default: all

@@ -2,7 +2,7 @@
 
 _Dockerfiles for LFE based upon the official Erlang Docker images_
 
-<image src="resources/images/docker-thumb.png" />
+<image src="https://github.com/lfex/dockerfiles/raw/main/resources/images/docker-thumb.png" />
 
 ##### Table of Contents
 

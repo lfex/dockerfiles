@@ -1,11 +1,13 @@
-LFE_VERSION = 2.0
+LFE_VERSION = 2.1.1
 LATEST_ERL = 26.0
 ERL_VERSIONS_NEW = 23.3 24.3 25.3 $(LATEST_ERL)
 ERL_VERSIONS_MID = 21.3 22.3
 ERL_VERSIONS_OLD = 20.3
 ERL_VERSIONS_STD =  $(ERL_VERSIONS_OLD) $(ERL_VERSIONS_MID) $(ERL_VERSIONS_NEW)
-ERL_VERSIONS_SLIM = $(ERL_VERSIONS_MID) $(ERL_VERSIONS_NEW)
-ERL_VERSIONS_ALPINE = $(ERL_VERSIONS_NEW)
+# ERL_VERSIONS_SLIM = $(ERL_VERSIONS_MID) $(ERL_VERSIONS_NEW)
+ERL_VERSIONS_SLIM = $(ERL_VERSIONS_STD)
+# ERL_VERSIONS_ALPINE = $(ERL_VERSIONS_NEW)
+ERL_VERSIONS_ALPINE = $(ERL_VERSIONS_STD)
 OFFICIAL_TYPE = alpine
 TAG_PREFIX = lfex/lfe
 YAWS_TAG_PREFIX = lfex/yaws
@@ -15,7 +17,7 @@ BUILD_DIR = build
 #     entry point in the Docker images. Once rvirding/lfe has merged the PRs
 #     which contain the appropriate fixes, future versioned LFE Docker images
 #     can be built using rvirding/lfe + version tag.
-LFE_REPO = git@github.com:rvirding/lfe.git
+LFE_REPO = git@github.com:lfe/lfe.git
 LFE_BRANCH = develop
 #YAWS_REPO = git@github.com:erlsci/yaws.git
 YAWS_REPO = git@github.com:erlyaws/yaws.git
@@ -23,13 +25,15 @@ YAWS_BRANCH = rebar3-support
 
 default: all
 
-build-all-lfe: standard slim alpine
+build-all-lfe:  alpine slim standard
 
 build-all-yaws: yaws-standard yaws-slim yaws-alpine
 
 all: clean update-erlang build-all-lfe build-all-yaws
 
 build-push-all: all yaws-push yaws-push-latest push push-latest
+
+push-all: push push-latest
 
 .PHONY: standard slim alpine push yaws-standard yaws-slim yaws-alpine
 

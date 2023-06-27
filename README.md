@@ -40,17 +40,13 @@ Erlang docker files (available [here](https://hub.docker.com/_/erlang)):
 
 These include the following LFE versions:
 
-- 1.3-dev
+- 2.1.1
 
-Dependeing upon image type, some or all of the following Erlang versions are
-available:
+Alpine, Slim, and Standard images are available for the supported versions:
 
-- 17.5 (only with standard image type)
-- 18.3 (standard and slim)
-- 19.3 (standard and slim)
-- 20.3 (all)
-- 21.3 (all)
-- 22.0 (all)
+- 23.3, 24.3, 25.3, 26.0
+- 21.3, 22.3
+- 20.3
 
 The LFE images are published with tags in the following format:
 
@@ -58,10 +54,10 @@ The LFE images are published with tags in the following format:
 [org]/[project]:[lfe-version]-[erlang-version]-[image-type]
 ```
 
-For example, LFE v1.3 running on Erlang 20.3 in an Alpine-based container would be:
+For example, LFE v2.1.1 running on Erlang 25.3 in an Alpine-based container would be:
 
 ```
-lfex/lfe:1.3-20.3-alpine
+lfex/lfe:2.1.1-25.3-alpine
 ```
 
 Note that the Alpine image is considered the canonical one, thus the `latest`
@@ -70,76 +66,23 @@ If this is what you want, than simply using either of the following will pull
 this down:
 
 ```
-$ docker run -it lfex/lfe:latest
+docker run -it lfex/lfe:latest
 ```
 
 or
 
 ```
-$ docker run -it lfex/lfe
+docker run -it lfex/lfe
 ```
 
 Additionally, the following latest versions are also provided as a convenience:
 
-* lfex/lfe:latest-standard
-* lfex/lfe:latest-slim
+- lfex/lfe:latest-standard
+- lfex/lfe:latest-slim
 
 All published LFE Docker images are available here:
 
 - [https://hub.docker.com/r/lfex/lfe/tags](https://hub.docker.com/r/lfex/lfe/tags)
-
-Comparison of LFE and Erlang image types and their sizes:
-
-| REPOSITORY | TAG               | SIZE   |
-|------------|-------------------|--------|
-| lfex/lfe   | latest            | 80.1MB |
-| lfex/lfe   | 1.3-22.0-alpine   | 80.1MB |
-| lfex/lfe   | 1.3-21.3-alpine   | 80.1MB |
-| lfex/lfe   | 1.3-20.3-alpine   | 84MB   |
-| lfex/lfe   | 1.3-22.0-slim     | 261MB  |
-| lfex/lfe   | 1.3-21.3-slim     | 258MB  |
-| lfex/lfe   | 1.3-20.3-slim     | 266MB  |
-| lfex/lfe   | 1.3-19.3-slim     | 523MB  |
-| lfex/lfe   | 1.3-18.3-slim     | 277MB  |
-| lfex/lfe   | 1.3-22.0-standard | 1.08GB |
-| lfex/lfe   | 1.3-21.3-standard | 1.07GB |
-| lfex/lfe   | 1.3-20.3-standard | 1.08GB |
-| lfex/lfe   | 1.3-19.3-standard | 1.1GB  |
-| lfex/lfe   | 1.3-18.3-standard | 1.1GB  |
-| lfex/lfe   | 1.3-17.5-standard | 753MB  |
-
-| REPOSITORY | TAG               | SIZE   |
-|------------|-------------------|--------|
-| erlang     | 22.0-alpine       | 73.4MB |
-| erlang     | 21.3-alpine       | 73.3MB |
-| erlang     | 20.3-alpine       | 77.2MB |
-| erlang     | 22.0-slim         | 253MB  |
-| erlang     | 21.3-slim         | 251MB  |
-| erlang     | 20.3-slim         | 258MB  |
-| erlang     | 19.3-slim         | 515MB  |
-| erlang     | 18.3-slim         | 270MB  |
-| erlang     | 22.0              | 1.07GB |
-| erlang     | 21.3              | 1.07GB |
-| erlang     | 20.3              | 1.07GB |
-| erlang     | 19.3              | 1.09GB |
-| erlang     | 18.3              | 1.09GB |
-| erlang     | 17.5              | 746MB  |
-
-In addition to the LFE images, a set of YAWS images is provided as well. These 
-use the same versioning convention as the lfex/lfe images, but live in the
-lfex/yaws repository Only the latest version of YAWS is supported (2.0.6, at 
-the time of this writing).
-
-To run a vanilla YAWS from a Docker images:
-
-```
-$ docker run -t -p 80:8000 -p 443:4443 lfex/yaws
-```
-
-Then visit http://localhost or https://localhost (if you test the SSL site, 
-you'll need to grant a security exception for the self-signed certs). For the 
-Basic Auth prompt, enter user `foo` and password `bar`.
-
 
 ## Usage [&#x219F;](#table-of-contents)
 
@@ -148,20 +91,20 @@ Basic Auth prompt, enter user `foo` and password `bar`.
 Running an LFE REPL in any of the provided images is as simple as the following:
 
 ```
-$ docker run -it lfex/lfe
+docker run lfex/lfe:2.1.1-25.3-alpine
 ```
 
 ```
-Erlang/OTP 21 [erts-10.3.5] [source] [64-bit] [smp:6:6] [ds:6:6:10] [async-threads:1] [hipe]
+Erlang/OTP 25 [erts-13.2.2.1] [source] [64-bit] [smp:8:8] [ds:8:8:10] [async-threads:1] [jit]
 
    ..-~.~_~---..
   (      \\     )    |   A Lisp-2+ on the Erlang VM
   |`-.._/_\\_.-':    |   Type (help) for usage info.
   |         g |_ \   |
   |        n    | |  |   Docs: http://docs.lfe.io/
-  |       a    / /   |   Source: http://github.com/rvirding/lfe
+  |       a    / /   |   Source: http://github.com/lfe/lfe
    \     l    |_/    |
-    \   r     /      |   LFE v1.3-dev (abort with ^G)
+    \   r     /      |   LFE v2.1.1 (abort with ^G)
      `-E___.-'
 
 lfe>
@@ -176,7 +119,7 @@ your testing convenience. How they are run depends upon each example. For
 instance, here's how to run the LFE port of the classic Erlang "ring" example:
 
 ```
-$ docker run lfex/lfe -pa examples/ebin -noshell -run ring main 503 50000000
+docker run lfex/lfe -pa examples/ebin -noshell -run ring main 503 50000000
 ```
 
 Note that, because these Docker images use `ENTRYPOINT`, they can be run just
@@ -191,11 +134,11 @@ Result: 292
 ```
 
 Another example, based on
-http://joearms.github.io/2013/11/21/My-favorite-erlang-program.html, will take
+<http://joearms.github.io/2013/11/21/My-favorite-erlang-program.html>, will take
 _quite_ a long while to finish:
 
 ```
-$ docker run lfex/lfe:1.3-18.3-slim -pa examples/ebin -noshell -run joes-fav run-it
+docker run lfex/lfe:1.3-18.3-slim -pa examples/ebin -noshell -run joes-fav run-it
 ```
 
 ```
@@ -228,7 +171,7 @@ Church numerals in LFE. To use it, you just need to include the `examples/ebin`
 in the Elrang modules path:
 
 ```
-$ docker run -it lfex/lfe:latest -pa examples/ebin
+docker run -it lfex/lfe:latest -pa examples/ebin
 ```
 
 ```lisp
@@ -276,7 +219,7 @@ compiled, but instead simply run in a REPL session), we can just use `slurp`.
 Here's the General Problem Solver LFE example using this approach:
 
 ```
-$ docker run -it lfex/lfe
+docker run -it lfex/lfe
 ```
 
 ```lisp
@@ -308,7 +251,7 @@ solved
 You can also run the LFE example scripts by changing the entry point:
 
 ```
-$ docker run --entrypoint=examples/sample-lfescript lfex/lfe:1.3-20.3-standard
+docker run --entrypoint=examples/sample-lfescript lfex/lfe:1.3-20.3-standard
 ```
 
 This will give us an error, since we didn't pass it the correct argument type:
@@ -320,7 +263,7 @@ usage: examples/sample-lfescript <integer>
 Now that we know what to do, thanks to the usage message, let's try again:
 
 ```
-$ docker run --entrypoint=examples/sample-lfescript lfex/lfe:1.3-20.3-slim 10
+docker run --entrypoint=examples/sample-lfescript lfex/lfe:1.3-20.3-slim 10
 ```
 
 ```
@@ -330,7 +273,7 @@ factorial 10 = 3628800
 Or another script example:
 
 ```
-$ docker run --entrypoint=examples/sample-lfe-shellscript lfex/lfe 5
+docker run --entrypoint=examples/sample-lfe-shellscript lfex/lfe 5
 ```
 
 ```

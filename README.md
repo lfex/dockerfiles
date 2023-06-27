@@ -38,9 +38,10 @@ Erlang docker files (available [here](https://hub.docker.com/_/erlang)):
 - slim (Debian based images with only what Erlang requires)
 - alpine
 
-These include the following LFE versions:
+The most recent images are build with the latest version of LFE, but there images with older versions:
 
-- 2.1.1
+- 2.1.1 (latest)
+- 1.3
 
 Alpine, Slim, and Standard images are available for the supported versions:
 

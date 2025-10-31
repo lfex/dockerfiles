@@ -18,7 +18,7 @@ BUILD_DIR = build
 #     which contain the appropriate fixes, future versioned LFE Docker images
 #     can be built using rvirding/lfe + version tag.
 LFE_REPO = git@github.com:lfe/lfe.git
-LFE_BRANCH = develop
+LFE_BRANCH? = develop
 #YAWS_REPO = git@github.com:erlsci/yaws.git
 YAWS_REPO = git@github.com:erlyaws/yaws.git
 YAWS_BRANCH = rebar3-support

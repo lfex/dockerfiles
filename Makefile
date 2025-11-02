@@ -21,7 +21,9 @@ LFE_REPO = git@github.com:lfe/lfe.git
 LFE_BRANCH? = develop
 #YAWS_REPO = git@github.com:erlsci/yaws.git
 YAWS_REPO = git@github.com:erlyaws/yaws.git
-YAWS_BRANCH = rebar3-support
+# Using the master branch because the latest version
+# has an old dependenciy of port_compiler which doesn't compile.
+YAWS_BRANCH = master
 
 default: all
 
